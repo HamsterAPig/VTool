@@ -48,7 +48,7 @@ Add tests with each feature. Use `*.test.ts` or `*.spec.ts` consistently. Keep u
 
 ## Commit & Pull Request Guidelines
 
-Use `Gitmoji + Conventional Commits + 中文描述`, for example `✨ feat: 新增首页布局` or `🐛 fix: 修复表格空状态显示异常`.
+Use `Gitmoji + Conventional Commits + 中文描述`, and write the emoji in code form, for example `:sparkles: feat: 新增首页布局` or `:bug: fix: 修复表格空状态显示异常`.
 
 Branch workflow for every new task:
 
@@ -62,6 +62,7 @@ Commit workflow:
 
 - Do not leave completed work uncommitted.
 - After implementation and verification are complete, automatically create commit(s) without waiting for an extra user prompt.
+- Commit messages should keep the Gitmoji portion in `:emoji:` text form instead of a literal emoji character.
 - Commit granularity should be judged automatically based on logical change boundaries:
   - use a single commit for a small, cohesive task;
   - split into multiple commits when there are clearly separate concerns such as refactor + feature, feature + tests, or independent fixes.

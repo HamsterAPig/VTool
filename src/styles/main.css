@@ -1,11 +1,20 @@
 :root {
   color-scheme: light;
   font-family:
-    'Manrope Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Outfit Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
     'Segoe UI', sans-serif;
   line-height: 1.5;
   font-weight: 500;
 
+  --font-text:
+    'Outfit Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Segoe UI', sans-serif;
+  --font-display:
+    'Outfit Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    sans-serif;
+  --font-number:
+    'Outfit Variable', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', sans-serif;
   --color-bg: #f5f7fb;
   --color-surface: rgba(255, 255, 255, 0.76);
   --color-surface-strong: rgba(255, 255, 255, 0.92);
@@ -15,6 +24,9 @@
   --color-primary: #4263eb;
   --color-accent: #14b8a6;
   --color-error: #d14343;
+  --color-worktime-positive: #16685f;
+  --color-worktime-negative: #9e5848;
+  --color-worktime-neutral: #566884;
   --shadow-soft: 0 24px 48px rgba(93, 108, 145, 0.15);
   --radius-lg: 28px;
   --radius-md: 18px;
@@ -36,6 +48,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  font-family: var(--font-text);
   color: var(--color-text);
   background:
     radial-gradient(
@@ -114,6 +127,7 @@ button:disabled {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
+  font-family: var(--font-display);
   font-weight: 800;
   letter-spacing: 0.03em;
 }
@@ -204,6 +218,7 @@ button:disabled {
 .hero-panel h1,
 .tool-hero h1 {
   margin: 1rem 0;
+  font-family: var(--font-display);
   font-size: clamp(2.4rem, 4vw, 4.6rem);
   line-height: 0.98;
   letter-spacing: -0.05em;
@@ -537,16 +552,17 @@ button:disabled {
 .browser-data-panel__copy h2,
 .workday-dialog__header h2 {
   margin: 0.8rem 0 0.5rem;
+  font-family: var(--font-display);
   font-size: 1.5rem;
   letter-spacing: -0.03em;
 }
 
 .browser-data-panel__copy p,
 .browser-data-panel__status,
-.worktime-summary-card p,
 .worktime-board__shortcut,
-.worktime-calendar__day-note,
-.workday-dialog__hint {
+.workday-dialog__hint,
+.workday-dialog__rule span,
+.worktime-rules__feedback p {
   margin: 0;
   color: var(--color-text-muted);
 }
@@ -580,7 +596,12 @@ button:disabled {
 }
 
 .worktime-summary-card {
-  padding: 1.25rem;
+  padding: 1.3rem;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(245, 248, 255, 0.88)
+  );
 }
 
 .worktime-summary-card__label {
@@ -592,14 +613,15 @@ button:disabled {
 
 .worktime-summary-card strong {
   display: block;
-  margin-bottom: 0.5rem;
-  font-size: 2rem;
-  line-height: 1;
-  letter-spacing: -0.04em;
+  font-family: var(--font-number);
+  font-size: clamp(2rem, 2.6vw, 2.8rem);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .worktime-board {
-  padding: 1.5rem;
+  padding: 1.6rem;
 }
 
 .worktime-board__toolbar {
@@ -634,9 +656,10 @@ button:disabled {
 
 .worktime-board__shortcut {
   margin-top: 1rem;
-  padding: 0.9rem 1rem;
-  background: rgba(114, 129, 255, 0.08);
-  border-radius: var(--radius-md);
+  padding: 0.75rem 0.9rem;
+  font-size: 0.9rem;
+  background: rgba(114, 129, 255, 0.06);
+  border-radius: 16px;
 }
 
 .worktime-calendar {
@@ -650,21 +673,27 @@ button:disabled {
   padding: 0.85rem 0.5rem;
   text-align: center;
   color: var(--color-text-muted);
-  font-size: 0.92rem;
+  font-family: var(--font-display);
+  font-size: 0.84rem;
   font-weight: 800;
+  letter-spacing: 0.08em;
 }
 
 .worktime-calendar__day {
   display: grid;
-  align-content: start;
-  gap: 0.8rem;
-  min-height: 170px;
-  padding: 1rem;
+  align-content: space-between;
+  gap: 1rem;
+  min-height: 148px;
+  padding: 1rem 0.95rem;
   color: var(--color-text);
   text-align: left;
-  background: rgba(255, 255, 255, 0.9);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(247, 250, 255, 0.82)
+  );
   border: 1px solid rgba(105, 121, 166, 0.14);
-  border-radius: 22px;
+  border-radius: 26px;
   box-shadow: 0 12px 28px rgba(124, 138, 171, 0.08);
   transition:
     transform 180ms ease,
@@ -687,15 +716,25 @@ button:disabled {
 }
 
 .worktime-calendar__day--selected {
-  box-shadow: 0 0 0 3px rgba(66, 99, 235, 0.14);
+  box-shadow:
+    0 0 0 3px rgba(66, 99, 235, 0.14),
+    0 18px 36px rgba(124, 138, 171, 0.12);
 }
 
 .worktime-calendar__day--positive {
-  background: linear-gradient(180deg, rgba(227, 250, 245, 0.94), white);
+  background: linear-gradient(180deg, rgba(227, 250, 245, 0.96), white);
 }
 
 .worktime-calendar__day--negative {
-  background: linear-gradient(180deg, rgba(255, 241, 241, 0.94), white);
+  background: linear-gradient(180deg, rgba(255, 241, 241, 0.96), white);
+}
+
+.worktime-calendar__day--neutral {
+  background: linear-gradient(
+    180deg,
+    rgba(240, 245, 255, 0.9),
+    rgba(255, 255, 255, 0.96)
+  );
 }
 
 .worktime-calendar__day-top,
@@ -707,35 +746,54 @@ button:disabled {
 }
 
 .worktime-calendar__day-number {
-  font-size: 1.15rem;
+  font-family: var(--font-number);
+  font-size: 1.08rem;
   font-weight: 800;
+  letter-spacing: -0.04em;
 }
 
-.worktime-calendar__day-badge {
-  padding: 0.28rem 0.55rem;
-  border-radius: 999px;
-  color: var(--color-primary);
-  background: rgba(66, 99, 235, 0.1);
-  font-size: 0.76rem;
-  font-weight: 700;
+.worktime-calendar__day-times {
+  display: grid;
+  gap: 0.4rem;
+  align-self: center;
+}
+
+.worktime-calendar__day-times span {
+  color: rgba(24, 34, 55, 0.86);
+  font-family: var(--font-number);
+  font-size: clamp(1.04rem, 1.2vw, 1.24rem);
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .worktime-calendar__day-main {
-  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 .worktime-calendar__day-main strong {
-  font-size: 1.15rem;
-  line-height: 1.2;
+  font-family: var(--font-number);
+  color: var(--color-worktime-neutral);
+  font-size: clamp(0.76rem, 0.82vw, 0.9rem);
+  font-weight: 680;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
-.worktime-calendar__day-main span {
-  color: var(--color-text-muted);
-  font-size: 0.92rem;
+.worktime-calendar__day--positive .worktime-calendar__day-main strong {
+  color: var(--color-worktime-positive);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.68);
 }
 
-.worktime-calendar__day-note {
-  font-size: 0.88rem;
+.worktime-calendar__day--negative .worktime-calendar__day-main strong {
+  color: var(--color-worktime-negative);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.worktime-calendar__day--neutral .worktime-calendar__day-main strong {
+  color: var(--color-worktime-neutral);
 }
 
 .workday-dialog {
@@ -752,7 +810,7 @@ button:disabled {
 
 .workday-dialog__panel {
   width: min(100%, 640px);
-  padding: 1.5rem;
+  padding: 1.6rem;
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 30px;
@@ -775,11 +833,25 @@ button:disabled {
   font-size: 1.5rem;
 }
 
+.workday-dialog__rule {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0;
+  font-size: 0.94rem;
+}
+
 .workday-dialog__fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
   margin-top: 1.25rem;
+}
+
+.workday-dialog__time-input {
+  font-family: var(--font-number);
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: 0.04em;
 }
 
 .workday-dialog__summary {
@@ -803,8 +875,11 @@ button:disabled {
 }
 
 .workday-dialog__summary-item strong {
-  font-size: 1rem;
-  line-height: 1.35;
+  font-family: var(--font-number);
+  font-size: 1.15rem;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .workday-dialog__error {
@@ -825,6 +900,157 @@ button:disabled {
 .workday-dialog__hint {
   margin-top: 1rem;
   font-size: 0.9rem;
+}
+
+.worktime-rules {
+  padding: 1.35rem 1.5rem;
+}
+
+.worktime-rules__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.worktime-rules__summary::-webkit-details-marker {
+  display: none;
+}
+
+.worktime-rules__summary h2 {
+  margin: 0.7rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  letter-spacing: -0.05em;
+}
+
+.worktime-rules__eyebrow {
+  display: inline-flex;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  color: #845ef7;
+  background: rgba(132, 94, 247, 0.1);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.worktime-rules__current {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+}
+
+.worktime-rules__body {
+  display: grid;
+  gap: 1.2rem;
+  margin-top: 1.4rem;
+}
+
+.worktime-rules__top {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.worktime-rules__top-field,
+.worktime-rules__editor-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.worktime-rules__top-field span,
+.worktime-rules__editor-field span,
+.worktime-rules__scope-title {
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+}
+
+.worktime-rules__feedback {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+  padding: 0.95rem 1rem;
+  background: rgba(244, 247, 255, 0.86);
+  border-radius: var(--radius-md);
+}
+
+.worktime-rules__error {
+  color: var(--color-error);
+}
+
+.worktime-rules__scopes {
+  display: grid;
+  gap: 1rem;
+}
+
+.worktime-rules__scope-group {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.worktime-rules__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.worktime-rules__chip {
+  padding: 0.65rem 0.9rem;
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(105, 121, 166, 0.18);
+  border-radius: 999px;
+}
+
+.worktime-rules__chip--active {
+  color: var(--color-text);
+  background: rgba(66, 99, 235, 0.12);
+  border-color: rgba(66, 99, 235, 0.25);
+}
+
+.worktime-rules__override-create {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.worktime-rules__override-create .glass-input {
+  width: auto;
+  min-width: 180px;
+}
+
+.worktime-rules__editor {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(248, 250, 255, 0.92);
+  border-radius: 22px;
+}
+
+.worktime-rules__editor-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(180px, 0.6fr);
+  gap: 1rem;
+}
+
+.worktime-rules__segment-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.worktime-rules__segment-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) 130px 140px 140px auto;
+  gap: 0.75rem;
+}
+
+.worktime-rules__editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .footer-row {
@@ -879,7 +1105,8 @@ button:disabled {
   }
 
   .browser-data-panel,
-  .worktime-board__toolbar {
+  .worktime-board__toolbar,
+  .worktime-rules__summary {
     flex-direction: column;
   }
 
@@ -892,8 +1119,14 @@ button:disabled {
   }
 
   .workday-dialog__fields,
-  .workday-dialog__summary {
+  .workday-dialog__summary,
+  .worktime-rules__top,
+  .worktime-rules__editor-head {
     grid-template-columns: 1fr;
+  }
+
+  .worktime-rules__segment-row {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -904,7 +1137,9 @@ button:disabled {
   .hero-panel__actions,
   .panel-actions,
   .browser-data-panel__actions,
-  .workday-dialog__actions {
+  .workday-dialog__actions,
+  .worktime-rules__editor-actions,
+  .worktime-rules__override-create {
     flex-direction: column;
     align-items: stretch;
   }
@@ -932,5 +1167,9 @@ button:disabled {
 
   .worktime-calendar__day {
     min-height: 144px;
+  }
+
+  .worktime-rules__segment-row {
+    grid-template-columns: 1fr;
   }
 }
