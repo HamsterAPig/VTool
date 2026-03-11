@@ -1,17 +1,26 @@
 <script setup lang="ts">
 import BrowserDataPanel from '@/components/BrowserDataPanel.vue'
 import WorkdayEntryDialog from '@/features/worktime-tool/WorkdayEntryDialog.vue'
+import WorktimeRulesPanel from '@/features/worktime-tool/WorktimeRulesPanel.vue'
 import { useWorktimeCalendar } from '@/features/worktime-tool/useWorktimeCalendar'
 
 const {
+  activeOverrideDate,
+  activeRuleLabel,
+  activeRuleSource,
+  activeWeekday,
+  addDraftSegment,
+  addOverrideRule,
   calendarDays,
   canCopyPrevious,
   closeEditor,
   copyPreviousDay,
+  defaultTargetMinutes,
   deleteEditorRecord,
   draftEndTime,
   draftStartTime,
   editorError,
+  editorResolvedRule,
   editorSummary,
   exportRecords,
   importFromFile,
@@ -20,14 +29,31 @@ const {
   monthSummary,
   moveMonth,
   openEditor,
+  overrideDateInput,
+  overrideDates,
+  removeActiveOverrideRule,
+  removeDraftSegment,
+  ruleDraft,
+  ruleEditorError,
+  ruleEditorStatus,
   saveAndMove,
   saveEditor,
+  saveRuleDraft,
+  selectOverrideRule,
   selectedDateLabel,
+  selectWeeklyRule,
   storageStatus,
+  timeOptions,
+  updateDefaultTargetMinutes,
+  updateDraftSegment,
+  updateOverrideDateInput,
+  updateRuleDraftName,
+  updateRuleDraftTargetMinutes,
   visibleMonthIndex,
   visibleMonthLabel,
   visibleYear,
   weekLabels,
+  weekdayItems,
   yearOptions,
 } = useWorktimeCalendar()
 
@@ -45,61 +71,69 @@ const monthOptions = [
   '11月',
   '12月',
 ]
-
-function getDayMainTitle(day: (typeof calendarDays.value)[number]) {
-  return day.record ? day.summary.totalLabel : '未录入'
-}
-
-function getDayMainSubtitle(day: (typeof calendarDays.value)[number]) {
-  if (!day.record) {
-    return '不计入汇总'
-  }
-
-  return day.summary.balanceLabel
-}
 </script>
 
 <template>
   <div class="tool-page worktime-page">
     <section class="tool-hero worktime-hero">
-      <span class="hero-badge">Worktime Calendar</span>
+      <span class="hero-badge">Worktime Rule Engine</span>
       <h1>工时日历</h1>
-      <p>
-        用月历管理每天的上下班时间，自动扣除午休与 17:30-18:00
-        空档，直接给出当日和当月的工时结论。
-      </p>
+      <p>只看分钟差值，规则独立可配，记录和规则一起保存在浏览器里。</p>
     </section>
 
     <section class="worktime-overview">
       <article class="surface-panel worktime-summary-card">
         <span class="worktime-summary-card__label">当前月份</span>
         <strong>{{ visibleMonthLabel }}</strong>
-        <p>只统计有完整上班数据的日期。</p>
       </article>
       <article class="surface-panel worktime-summary-card">
         <span class="worktime-summary-card__label">记录天数</span>
         <strong>{{ monthSummary.recordedDays }}</strong>
-        <p>本月已录入并可计算的工作日数。</p>
       </article>
       <article class="surface-panel worktime-summary-card">
-        <span class="worktime-summary-card__label">累计工时</span>
+        <span class="worktime-summary-card__label">累计分钟</span>
         <strong>{{ monthSummary.totalLabel }}</strong>
-        <p>只累计当月有效记录的总工时。</p>
       </article>
       <article class="surface-panel worktime-summary-card">
-        <span class="worktime-summary-card__label">工时结论</span>
+        <span class="worktime-summary-card__label">月结论</span>
         <strong>{{ monthSummary.balanceLabel }}</strong>
-        <p>超过为正，不足为负，基准按每天 8 小时。</p>
       </article>
     </section>
 
     <BrowserDataPanel
-      description="全部工时数据保存在当前浏览器中，可随时导入或导出 JSON 备份。"
+      description="导出时会同时包含工时记录和规则配置。"
       :export-disabled="false"
       :status="storageStatus"
-      title="浏览器数据管理"
+      title="浏览器数据"
       @export="exportRecords"
       @import-file="importFromFile"
+    />
+
+    <WorktimeRulesPanel
+      :active-override-date="activeOverrideDate"
+      :active-rule-label="activeRuleLabel"
+      :active-rule-source="activeRuleSource"
+      :active-weekday="activeWeekday"
+      :default-target-minutes="defaultTargetMinutes"
+      :override-date-input="overrideDateInput"
+      :override-dates="overrideDates"
+      :rule-draft="ruleDraft"
+      :rule-editor-error="ruleEditorError"
+      :rule-editor-status="ruleEditorStatus"
+      :time-options="timeOptions"
+      :weekday-items="weekdayItems"
+      @add-override="addOverrideRule"
+      @add-segment="addDraftSegment"
+      @remove-override="removeActiveOverrideRule"
+      @remove-segment="removeDraftSegment"
+      @save-rule="saveRuleDraft"
+      @select-override="selectOverrideRule"
+      @select-weekday="selectWeeklyRule"
+      @update-default-target-minutes="updateDefaultTargetMinutes"
+      @update-override-date-input="updateOverrideDateInput"
+      @update-rule-name="updateRuleDraftName"
+      @update-rule-target-minutes="updateRuleDraftTargetMinutes"
+      @update-segment="updateDraftSegment"
     />
 
     <section class="surface-panel worktime-board">
@@ -156,7 +190,7 @@ function getDayMainSubtitle(day: (typeof calendarDays.value)[number]) {
       </div>
 
       <div class="worktime-board__shortcut">
-        键盘：方向键切换日期，Enter 编辑，T 回到今天，[ / ] 切换月份。
+        方向键切换日期，Enter 编辑，[ / ] 切换月份，T 回到今天。
       </div>
 
       <div class="worktime-calendar" role="grid" aria-label="工时月历">
@@ -177,11 +211,11 @@ function getDayMainSubtitle(day: (typeof calendarDays.value)[number]) {
             'worktime-calendar__day--today': day.isToday,
             'worktime-calendar__day--selected': day.isSelected,
             'worktime-calendar__day--positive':
-              day.summary.status === 'complete' &&
-              day.summary.balanceMinutes > 0,
+              day.hasCompleteRecord && day.summary.balanceMinutes > 0,
             'worktime-calendar__day--negative':
-              day.summary.status === 'complete' &&
-              day.summary.balanceMinutes < 0,
+              day.hasCompleteRecord && day.summary.balanceMinutes < 0,
+            'worktime-calendar__day--neutral':
+              day.hasCompleteRecord && day.summary.balanceMinutes === 0,
           }"
           type="button"
           @click="openEditor(day.dateKey)"
@@ -190,20 +224,16 @@ function getDayMainSubtitle(day: (typeof calendarDays.value)[number]) {
             <span class="worktime-calendar__day-number">{{
               day.dayNumber
             }}</span>
-            <span v-if="day.record" class="worktime-calendar__day-badge"
-              >已录入</span
-            >
           </div>
           <div class="worktime-calendar__day-main">
-            <strong>{{ getDayMainTitle(day) }}</strong>
-            <span>{{ getDayMainSubtitle(day) }}</span>
+            <strong>{{ day.deltaLabel }}</strong>
           </div>
-          <p class="worktime-calendar__day-note">{{ day.summary.message }}</p>
         </button>
       </div>
     </section>
 
     <WorkdayEntryDialog
+      :applied-rule="editorResolvedRule"
       :can-copy-previous="canCopyPrevious"
       :date-label="selectedDateLabel"
       :end-time="draftEndTime"

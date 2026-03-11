@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import type { WorktimeDaySummary } from '@/features/worktime-tool/worktime'
+import type {
+  ResolvedWorktimeRule,
+  WorktimeDaySummary,
+} from '@/features/worktime-tool/worktime'
 
 const props = defineProps<{
   isOpen: boolean
@@ -7,6 +10,7 @@ const props = defineProps<{
   startTime: string
   endTime: string
   summary: WorktimeDaySummary
+  appliedRule: ResolvedWorktimeRule
   errorMessage: string
   canCopyPrevious: boolean
 }>()
@@ -43,6 +47,16 @@ function onOverlayClick(event: MouseEvent) {
           <div>
             <span class="workday-dialog__eyebrow">Day Entry</span>
             <h2>{{ props.dateLabel }}</h2>
+            <p class="workday-dialog__rule">
+              {{ props.appliedRule.template.name }}
+              <span>
+                {{
+                  props.appliedRule.source === 'override'
+                    ? '日期例外规则'
+                    : '星期模板'
+                }}
+              </span>
+            </p>
           </div>
           <button
             aria-label="关闭弹窗"
@@ -88,16 +102,16 @@ function onOverlayClick(event: MouseEvent) {
 
         <div class="workday-dialog__summary">
           <div class="workday-dialog__summary-item">
-            <span>当日工时</span>
+            <span>有效工时</span>
             <strong>{{ props.summary.totalLabel }}</strong>
           </div>
           <div class="workday-dialog__summary-item">
-            <span>相对 8 小时</span>
-            <strong>{{ props.summary.balanceLabel }}</strong>
+            <span>目标分钟</span>
+            <strong>{{ props.summary.targetLabel }}</strong>
           </div>
           <div class="workday-dialog__summary-item">
-            <span>规则反馈</span>
-            <strong>{{ props.summary.message }}</strong>
+            <span>差值</span>
+            <strong>{{ props.summary.balanceLabel }}</strong>
           </div>
         </div>
 
@@ -145,7 +159,7 @@ function onOverlayClick(event: MouseEvent) {
         </div>
 
         <p class="workday-dialog__hint">
-          快捷键：Esc 关闭，Ctrl/Cmd + S 保存，Alt + ← / → 保存并切换日期。
+          Esc 关闭，Ctrl/Cmd + S 保存，Alt + ← / → 保存并切换日期。
         </p>
       </div>
     </div>
