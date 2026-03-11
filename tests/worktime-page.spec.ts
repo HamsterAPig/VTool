@@ -23,6 +23,9 @@ describe('WorktimeToolPage', () => {
     expect(wrapper.text()).toContain('周日')
     expect(wrapper.text()).toContain('周六')
     expect(wrapper.findAll('.worktime-calendar__day')).toHaveLength(35)
+    expect(
+      (wrapper.get('.worktime-rules').element as HTMLDetailsElement).open,
+    ).toBe(false)
 
     const firstDayButton = wrapper
       .findAll('.worktime-calendar__day')
@@ -81,6 +84,8 @@ describe('WorktimeToolPage', () => {
     await wrapper
       .get('.workday-dialog__actions .button--primary')
       .trigger('click')
+
+    await wrapper.get('.worktime-rules__summary').trigger('click')
 
     const weekdayChip = wrapper
       .findAll('.worktime-rules__chip')

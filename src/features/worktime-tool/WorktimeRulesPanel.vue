@@ -40,7 +40,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <details class="surface-panel worktime-rules" open>
+  <details class="surface-panel worktime-rules">
     <summary class="worktime-rules__summary">
       <div>
         <span class="worktime-rules__eyebrow">Rule Engine</span>
