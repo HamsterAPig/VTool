@@ -1,18 +1,20 @@
 :root {
   color-scheme: light;
   font-family:
-    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+    'Outfit Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Segoe UI', sans-serif;
   line-height: 1.5;
   font-weight: 500;
 
   --font-text:
-    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+    'Outfit Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Segoe UI', sans-serif;
   --font-display:
-    'Manrope Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Outfit Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
     sans-serif;
   --font-number:
-    'Manrope Variable', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
-    sans-serif;
+    'Outfit Variable', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', sans-serif;
   --color-bg: #f5f7fb;
   --color-surface: rgba(255, 255, 255, 0.76);
   --color-surface-strong: rgba(255, 255, 255, 0.92);
@@ -22,6 +24,9 @@
   --color-primary: #4263eb;
   --color-accent: #14b8a6;
   --color-error: #d14343;
+  --color-worktime-positive: #16685f;
+  --color-worktime-negative: #9e5848;
+  --color-worktime-neutral: #566884;
   --shadow-soft: 0 24px 48px rgba(93, 108, 145, 0.15);
   --radius-lg: 28px;
   --radius-md: 18px;
@@ -749,14 +754,16 @@ button:disabled {
 
 .worktime-calendar__day-times {
   display: grid;
-  gap: 0.35rem;
+  gap: 0.4rem;
   align-self: center;
 }
 
 .worktime-calendar__day-times span {
-  color: var(--color-text-muted);
+  color: rgba(24, 34, 55, 0.86);
   font-family: var(--font-number);
-  font-size: 0.88rem;
+  font-size: clamp(1.04rem, 1.2vw, 1.24rem);
+  font-weight: 650;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums lining-nums;
 }
 
@@ -767,10 +774,26 @@ button:disabled {
 
 .worktime-calendar__day-main strong {
   font-family: var(--font-number);
-  font-size: clamp(1rem, 1.2vw, 1.3rem);
+  color: var(--color-worktime-neutral);
+  font-size: clamp(0.76rem, 0.82vw, 0.9rem);
+  font-weight: 680;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: 0.01em;
   font-variant-numeric: tabular-nums lining-nums;
+}
+
+.worktime-calendar__day--positive .worktime-calendar__day-main strong {
+  color: var(--color-worktime-positive);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.68);
+}
+
+.worktime-calendar__day--negative .worktime-calendar__day-main strong {
+  color: var(--color-worktime-negative);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.worktime-calendar__day--neutral .worktime-calendar__day-main strong {
+  color: var(--color-worktime-neutral);
 }
 
 .workday-dialog {
