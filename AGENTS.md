@@ -48,7 +48,25 @@ Add tests with each feature. Use `*.test.ts` or `*.spec.ts` consistently. Keep u
 
 ## Commit & Pull Request Guidelines
 
-Use `Gitmoji + Conventional Commits + 中文描述`, for example `✨ feat: 新增首页布局` or `🐛 fix: 修复表格空状态显示异常`. Default workflow is to commit directly on `master`; do not create a new feature branch unless a later task explicitly asks for one. If pull requests are introduced later, include a short summary, linked issue if available, test notes, and screenshots for UI changes.
+Use `Gitmoji + Conventional Commits + 中文描述`, for example `✨ feat: 新增首页布局` or `🐛 fix: 修复表格空状态显示异常`.
+
+Branch workflow for every new task:
+
+- Always create a new working branch before implementation.
+- Prefer branching from `develop`.
+- If `develop` does not exist, branch from `main`.
+- If neither `develop` nor `main` exists, branch from `master`.
+- The agent should auto-detect which base branch is available in that order and create the task branch from the first match.
+
+Commit workflow:
+
+- Do not leave completed work uncommitted.
+- After implementation and verification are complete, automatically create commit(s) without waiting for an extra user prompt.
+- Commit granularity should be judged automatically based on logical change boundaries:
+  - use a single commit for a small, cohesive task;
+  - split into multiple commits when there are clearly separate concerns such as refactor + feature, feature + tests, or independent fixes.
+- Avoid mixing unrelated changes into one commit.
+- If pull requests are introduced later, include a short summary, linked issue if available, test notes, and screenshots for UI changes.
 
 ## Configuration Notes
 
