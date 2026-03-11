@@ -19,6 +19,8 @@ const emit = defineEmits<{
   close: []
   copyPrevious: []
   delete: []
+  normalizeEndTime: []
+  normalizeStartTime: []
   save: []
   saveNext: []
   savePrevious: []
@@ -73,8 +75,13 @@ function onOverlayClick(event: MouseEvent) {
             <span class="field-label">上班时间</span>
             <input
               :value="props.startTime"
-              class="glass-input"
-              type="time"
+              class="glass-input workday-dialog__time-input"
+              inputmode="numeric"
+              maxlength="5"
+              placeholder="08:30"
+              spellcheck="false"
+              type="text"
+              @blur="emit('normalizeStartTime')"
               @input="
                 emit(
                   'update:startTime',
@@ -88,8 +95,13 @@ function onOverlayClick(event: MouseEvent) {
             <span class="field-label">下班时间</span>
             <input
               :value="props.endTime"
-              class="glass-input"
-              type="time"
+              class="glass-input workday-dialog__time-input"
+              inputmode="numeric"
+              maxlength="5"
+              placeholder="17:30"
+              spellcheck="false"
+              type="text"
+              @blur="emit('normalizeEndTime')"
               @input="
                 emit(
                   'update:endTime',

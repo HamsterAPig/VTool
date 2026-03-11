@@ -110,6 +110,7 @@ describe('worktime utilities', () => {
 
     expect(summary.recordedDays).toBe(2)
     expect(summary.totalMinutes).toBe(960)
+    expect(summary.totalLabel).toBe('16小时00分钟')
     expect(summary.balanceMinutes).toBe(0)
     expect(summary.balanceLabel).toBe('0 分钟')
   })

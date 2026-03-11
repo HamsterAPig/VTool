@@ -8,7 +8,9 @@ import {
   createDefaultDayTemplate,
   createRuleSegment,
   formatBalanceMinutes,
+  formatDurationHours,
   formatMinuteValue,
+  normalizeEditableTimeValue,
   resolveRuleForDate,
   summarizeMonth,
   validateDayTemplate,
@@ -35,6 +37,8 @@ interface CalendarDay {
   record: WorktimeDayRecord | null
   deltaLabel: string
   hasCompleteRecord: boolean
+  startTimeLabel: string
+  endTimeLabel: string
   summary: ReturnType<typeof calculateWorktime>
 }
 
@@ -106,6 +110,71 @@ function downloadJson(raw: string, filename: string) {
   anchor.download = filename
   anchor.click()
   URL.revokeObjectURL(url)
+}
+
+function getVisibleDateRange(month: Date) {
+  const firstVisibleDate = addDays(month, -month.getDay())
+  const lastDayOfMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0)
+  const lastVisibleDate = addDays(lastDayOfMonth, 6 - lastDayOfMonth.getDay())
+  const dayCount =
+    Math.floor(
+      (lastVisibleDate.getTime() - firstVisibleDate.getTime()) /
+        (24 * 60 * 60 * 1000),
+    ) + 1
+
+  return {
+    dayCount,
+    firstVisibleDate,
+  }
+}
+
+function getCalendarRecordLabels(record: WorktimeDayRecord | null) {
+  return {
+    endTimeLabel: record?.endTime || '--:--',
+    startTimeLabel: record?.startTime || '--:--',
+  }
+}
+
+function buildCalendarSummary(
+  dateKey: string,
+  record: WorktimeDayRecord | null,
+  rules: WorktimeStoragePayload['rules'],
+) {
+  return calculateWorktime(
+    {
+      startTime: record?.startTime ?? '',
+      endTime: record?.endTime ?? '',
+    },
+    resolveRuleForDate(dateKey, rules),
+  )
+}
+
+function buildCalendarDay(
+  date: Date,
+  selectedDateKey: string,
+  visibleMonth: Date,
+  todayKey: string,
+  payload: WorktimeStoragePayload,
+): CalendarDay {
+  const dateKey = formatDateKey(date)
+  const record = payload.records[dateKey] ?? null
+  const summary = buildCalendarSummary(dateKey, record, payload.rules)
+  const { endTimeLabel, startTimeLabel } = getCalendarRecordLabels(record)
+
+  return {
+    date,
+    dateKey,
+    dayNumber: date.getDate(),
+    isCurrentMonth: sameMonth(date, visibleMonth),
+    isSelected: dateKey === selectedDateKey,
+    isToday: dateKey === todayKey,
+    record,
+    deltaLabel: summary.status === 'complete' ? summary.balanceLabel : '',
+    hasCompleteRecord: summary.status === 'complete',
+    startTimeLabel,
+    endTimeLabel,
+    summary,
+  }
 }
 
 function clonePayload(payload: WorktimeStoragePayload): WorktimeStoragePayload {
@@ -222,35 +291,19 @@ export function useWorktimeCalendar() {
     return Boolean(previousRecord?.startTime && previousRecord?.endTime)
   })
   const calendarDays = computed<CalendarDay[]>(() => {
-    const firstVisibleDate = addDays(
+    const { dayCount, firstVisibleDate } = getVisibleDateRange(
       visibleMonth.value,
-      -visibleMonth.value.getDay(),
     )
 
-    return Array.from({ length: 42 }, (_, index) => {
+    return Array.from({ length: dayCount }, (_, index) => {
       const date = addDays(firstVisibleDate, index)
-      const dateKey = formatDateKey(date)
-      const record = payload.value.records[dateKey] ?? null
-      const summary = calculateWorktime(
-        {
-          startTime: record?.startTime ?? '',
-          endTime: record?.endTime ?? '',
-        },
-        resolveRuleForDate(dateKey, payload.value.rules),
-      )
-
-      return {
+      return buildCalendarDay(
         date,
-        dateKey,
-        dayNumber: date.getDate(),
-        isCurrentMonth: sameMonth(date, visibleMonth.value),
-        isSelected: dateKey === selectedDateKey.value,
-        isToday: dateKey === todayKey,
-        record,
-        deltaLabel: summary.status === 'complete' ? summary.balanceLabel : '',
-        hasCompleteRecord: summary.status === 'complete',
-        summary,
-      }
+        selectedDateKey.value,
+        visibleMonth.value,
+        todayKey,
+        payload.value,
+      )
     })
   })
   const yearOptions = computed(() => {
@@ -422,6 +475,14 @@ export function useWorktimeCalendar() {
     draftStartTime.value = previousRecord.startTime
     draftEndTime.value = previousRecord.endTime
     editorError.value = ''
+  }
+
+  function normalizeDraftStartTime() {
+    draftStartTime.value = normalizeEditableTimeValue(draftStartTime.value)
+  }
+
+  function normalizeDraftEndTime() {
+    draftEndTime.value = normalizeEditableTimeValue(draftEndTime.value)
   }
 
   function moveSelection(amount: number) {
@@ -763,6 +824,9 @@ export function useWorktimeCalendar() {
     addOverrideRule,
     removeDraftSegment,
     formatBalanceMinutes,
+    formatDurationHours,
     formatMinuteValue,
+    normalizeDraftEndTime,
+    normalizeDraftStartTime,
   }
 }

@@ -28,6 +28,8 @@ const {
   jumpToToday,
   monthSummary,
   moveMonth,
+  normalizeDraftEndTime,
+  normalizeDraftStartTime,
   openEditor,
   overrideDateInput,
   overrideDates,
@@ -91,7 +93,7 @@ const monthOptions = [
         <strong>{{ monthSummary.recordedDays }}</strong>
       </article>
       <article class="surface-panel worktime-summary-card">
-        <span class="worktime-summary-card__label">累计分钟</span>
+        <span class="worktime-summary-card__label">累计工时</span>
         <strong>{{ monthSummary.totalLabel }}</strong>
       </article>
       <article class="surface-panel worktime-summary-card">
@@ -225,6 +227,10 @@ const monthOptions = [
               day.dayNumber
             }}</span>
           </div>
+          <div class="worktime-calendar__day-times">
+            <span>{{ day.startTimeLabel }}</span>
+            <span>{{ day.endTimeLabel }}</span>
+          </div>
           <div class="worktime-calendar__day-main">
             <strong>{{ day.deltaLabel }}</strong>
           </div>
@@ -244,6 +250,8 @@ const monthOptions = [
       @close="closeEditor"
       @copy-previous="copyPreviousDay"
       @delete="deleteEditorRecord"
+      @normalize-end-time="normalizeDraftEndTime"
+      @normalize-start-time="normalizeDraftStartTime"
       @save="saveEditor"
       @save-next="saveAndMove(1)"
       @save-previous="saveAndMove(-1)"

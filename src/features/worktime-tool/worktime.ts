@@ -318,6 +318,14 @@ export function formatMinuteValue(minutes: number): string {
   return `${minutes} 分钟`
 }
 
+export function formatDurationHours(minutes: number): string {
+  const normalizedMinutes = Math.abs(minutes)
+  const hours = Math.floor(normalizedMinutes / 60)
+  const remainingMinutes = normalizedMinutes % 60
+
+  return `${hours}小时${String(remainingMinutes).padStart(2, '0')}分钟`
+}
+
 export function formatBalanceMinutes(minutes: number): string {
   if (minutes === 0) {
     return '0 分钟'
@@ -326,6 +334,31 @@ export function formatBalanceMinutes(minutes: number): string {
   const prefix = minutes > 0 ? '+' : '-'
 
   return `${prefix}${Math.abs(minutes)} 分钟`
+}
+
+export function normalizeEditableTimeValue(raw: string): string {
+  const trimmed = raw.trim()
+
+  if (!trimmed) {
+    return ''
+  }
+
+  if (/^\d{1,2}:\d{2}$/.test(trimmed)) {
+    const [hourRaw, minuteRaw] = trimmed.split(':')
+    const hour = hourRaw?.padStart(2, '0') ?? ''
+
+    return `${hour}:${minuteRaw ?? ''}`
+  }
+
+  if (/^\d{3,4}$/.test(trimmed)) {
+    const normalized = trimmed.padStart(4, '0')
+    const hour = normalized.slice(0, 2)
+    const minute = normalized.slice(2)
+
+    return `${hour}:${minute}`
+  }
+
+  return trimmed
 }
 
 function buildStatusSummary(
@@ -451,7 +484,7 @@ export function summarizeMonth(
     recordedDays: recordedSummaries.length,
     totalMinutes,
     balanceMinutes,
-    totalLabel: formatMinuteValue(totalMinutes),
+    totalLabel: formatDurationHours(totalMinutes),
     balanceLabel: formatBalanceMinutes(balanceMinutes),
   }
 }

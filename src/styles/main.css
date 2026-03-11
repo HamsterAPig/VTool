@@ -747,6 +747,19 @@ button:disabled {
   letter-spacing: -0.04em;
 }
 
+.worktime-calendar__day-times {
+  display: grid;
+  gap: 0.35rem;
+  align-self: center;
+}
+
+.worktime-calendar__day-times span {
+  color: var(--color-text-muted);
+  font-family: var(--font-number);
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
 .worktime-calendar__day-main {
   align-items: flex-end;
   justify-content: flex-end;
@@ -754,9 +767,9 @@ button:disabled {
 
 .worktime-calendar__day-main strong {
   font-family: var(--font-number);
-  font-size: clamp(1.25rem, 1.8vw, 1.85rem);
-  line-height: 0.95;
-  letter-spacing: -0.06em;
+  font-size: clamp(1rem, 1.2vw, 1.3rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums lining-nums;
 }
 
@@ -810,6 +823,12 @@ button:disabled {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
   margin-top: 1.25rem;
+}
+
+.workday-dialog__time-input {
+  font-family: var(--font-number);
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: 0.04em;
 }
 
 .workday-dialog__summary {

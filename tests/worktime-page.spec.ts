@@ -22,6 +22,7 @@ describe('WorktimeToolPage', () => {
 
     expect(wrapper.text()).toContain('周日')
     expect(wrapper.text()).toContain('周六')
+    expect(wrapper.findAll('.worktime-calendar__day')).toHaveLength(35)
 
     const firstDayButton = wrapper
       .findAll('.worktime-calendar__day')
@@ -30,7 +31,9 @@ describe('WorktimeToolPage', () => {
     expect(firstDayButton).toBeDefined()
     await firstDayButton!.trigger('click')
 
-    const timeInputs = wrapper.findAll('input[type="time"]')
+    expect(wrapper.findAll('input[type="time"]')).toHaveLength(0)
+
+    const timeInputs = wrapper.findAll('.workday-dialog__time-input')
 
     expect(timeInputs).toHaveLength(2)
     await timeInputs[0]!.setValue('08:30')
@@ -42,8 +45,10 @@ describe('WorktimeToolPage', () => {
     expect(wrapper.find('.worktime-calendar__day-note').exists()).toBe(false)
     expect(wrapper.find('.worktime-calendar__day-badge').exists()).toBe(false)
     expect(wrapper.text()).toContain('记录天数1')
-    expect(wrapper.text()).toContain('510 分钟')
+    expect(wrapper.text()).toContain('8小时30分钟')
     expect(wrapper.text()).toContain('+30 分钟')
+    expect(firstDayButton!.text()).toContain('08:30')
+    expect(firstDayButton!.text()).toContain('18:30')
 
     const payload = window.localStorage.getItem('vtool.worktime.data')
 
@@ -69,7 +74,7 @@ describe('WorktimeToolPage', () => {
     expect(firstDayButton).toBeDefined()
     await firstDayButton!.trigger('click')
 
-    const timeInputs = wrapper.findAll('input[type="time"]')
+    const timeInputs = wrapper.findAll('.workday-dialog__time-input')
 
     await timeInputs[0]!.setValue('08:30')
     await timeInputs[1]!.setValue('17:30')
