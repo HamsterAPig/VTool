@@ -136,129 +136,135 @@ function handleUnitChange(event: Event) {
           </p>
         </div>
 
-        <div
-          v-if="result.status === 'success'"
-          class="time-frequency-result__stack"
-        >
-          <div class="time-frequency-main-result">
-            <span class="time-frequency-main-result__eyebrow">智能主结果</span>
-            <p class="time-frequency-main-result__source">
-              输入值：{{ result.data.mainState.sourceDisplay }}
-            </p>
-            <strong>{{ result.data.mainState.mainDisplay }}</strong>
-            <p>{{ result.data.mainState.mainDescription }}</p>
-
-            <div class="panel-actions time-frequency-main-result__actions">
-              <button
-                class="button button--primary time-frequency-action"
-                type="button"
-                @click="copyValue(result.data.mainState.copyValue)"
+        <Transition mode="out-in" name="time-frequency-result-fade">
+          <div
+            v-if="result.status === 'success'"
+            :key="`success-${result.data.mainState.sourceDisplay}`"
+            class="time-frequency-result__stack"
+          >
+            <div class="time-frequency-main-result">
+              <span class="time-frequency-main-result__eyebrow"
+                >智能主结果</span
               >
-                复制主结果
-              </button>
+              <p class="time-frequency-main-result__source">
+                输入值：{{ result.data.mainState.sourceDisplay }}
+              </p>
+              <strong>{{ result.data.mainState.mainDisplay }}</strong>
+              <p>{{ result.data.mainState.mainDescription }}</p>
+
+              <div class="panel-actions time-frequency-main-result__actions">
+                <button
+                  class="button button--primary time-frequency-action"
+                  type="button"
+                  @click="copyValue(result.data.mainState.copyValue)"
+                >
+                  复制主结果
+                </button>
+              </div>
+            </div>
+
+            <p class="result-summary">
+              {{ result.data.mainState.summary }}
+            </p>
+
+            <p
+              v-if="result.data.reciprocalGroup.status === 'error'"
+              class="result-state result-state--warning"
+            >
+              {{ result.data.reciprocalGroup.message }}
+            </p>
+
+            <div class="time-frequency-group-grid">
+              <section class="time-frequency-group">
+                <div class="time-frequency-group__header">
+                  <div>
+                    <h3>{{ result.data.sameDimensionGroup.title }}</h3>
+                    <p>
+                      已自动选出更易读的单位：{{
+                        result.data.sameDimensionGroup.preferred.display
+                      }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="result-list">
+                  <div
+                    v-for="item in result.data.sameDimensionGroup.items"
+                    :key="item.key"
+                    class="result-item"
+                  >
+                    <div>
+                      <span class="result-item__label">{{ item.label }}</span>
+                      <strong class="result-item__value">{{
+                        item.display
+                      }}</strong>
+                    </div>
+                    <button
+                      class="time-frequency-copy-button"
+                      type="button"
+                      @click="copyValue(item.display)"
+                    >
+                      复制
+                    </button>
+                  </div>
+                </div>
+              </section>
+
+              <section class="time-frequency-group">
+                <div class="time-frequency-group__header">
+                  <div>
+                    <h3>{{ result.data.reciprocalGroup.title }}</h3>
+                    <p v-if="result.data.reciprocalGroup.status === 'success'">
+                      已自动选出更易读的单位：{{
+                        result.data.reciprocalGroup.preferred.display
+                      }}
+                    </p>
+                    <p v-else>当前输入不满足互转条件，但同维度换算仍然可用。</p>
+                  </div>
+                </div>
+
+                <div
+                  v-if="result.data.reciprocalGroup.status === 'success'"
+                  class="result-list"
+                >
+                  <div
+                    v-for="item in result.data.reciprocalGroup.items"
+                    :key="item.key"
+                    class="result-item"
+                  >
+                    <div>
+                      <span class="result-item__label">{{ item.label }}</span>
+                      <strong class="result-item__value">{{
+                        item.display
+                      }}</strong>
+                    </div>
+                    <button
+                      class="time-frequency-copy-button"
+                      type="button"
+                      @click="copyValue(item.display)"
+                    >
+                      复制
+                    </button>
+                  </div>
+                </div>
+                <p v-else class="result-state">
+                  {{ result.data.reciprocalGroup.message }}
+                </p>
+              </section>
             </div>
           </div>
 
-          <p class="result-summary">
-            {{ result.data.mainState.summary }}
-          </p>
-
           <p
-            v-if="result.data.reciprocalGroup.status === 'error'"
-            class="result-state result-state--warning"
+            v-else-if="result.status === 'error'"
+            :key="`error-${result.message}`"
+            class="result-state result-state--error"
           >
-            {{ result.data.reciprocalGroup.message }}
+            {{ result.message }}
           </p>
-
-          <div class="time-frequency-group-grid">
-            <section class="time-frequency-group">
-              <div class="time-frequency-group__header">
-                <div>
-                  <h3>{{ result.data.sameDimensionGroup.title }}</h3>
-                  <p>
-                    已自动选出更易读的单位：{{
-                      result.data.sameDimensionGroup.preferred.display
-                    }}
-                  </p>
-                </div>
-              </div>
-
-              <div class="result-list">
-                <div
-                  v-for="item in result.data.sameDimensionGroup.items"
-                  :key="item.key"
-                  class="result-item"
-                >
-                  <div>
-                    <span class="result-item__label">{{ item.label }}</span>
-                    <strong class="result-item__value">{{
-                      item.display
-                    }}</strong>
-                  </div>
-                  <button
-                    class="time-frequency-copy-button"
-                    type="button"
-                    @click="copyValue(item.display)"
-                  >
-                    复制
-                  </button>
-                </div>
-              </div>
-            </section>
-
-            <section class="time-frequency-group">
-              <div class="time-frequency-group__header">
-                <div>
-                  <h3>{{ result.data.reciprocalGroup.title }}</h3>
-                  <p v-if="result.data.reciprocalGroup.status === 'success'">
-                    已自动选出更易读的单位：{{
-                      result.data.reciprocalGroup.preferred.display
-                    }}
-                  </p>
-                  <p v-else>当前输入不满足互转条件，但同维度换算仍然可用。</p>
-                </div>
-              </div>
-
-              <div
-                v-if="result.data.reciprocalGroup.status === 'success'"
-                class="result-list"
-              >
-                <div
-                  v-for="item in result.data.reciprocalGroup.items"
-                  :key="item.key"
-                  class="result-item"
-                >
-                  <div>
-                    <span class="result-item__label">{{ item.label }}</span>
-                    <strong class="result-item__value">{{
-                      item.display
-                    }}</strong>
-                  </div>
-                  <button
-                    class="time-frequency-copy-button"
-                    type="button"
-                    @click="copyValue(item.display)"
-                  >
-                    复制
-                  </button>
-                </div>
-              </div>
-              <p v-else class="result-state">
-                {{ result.data.reciprocalGroup.message }}
-              </p>
-            </section>
-          </div>
-        </div>
-
-        <p
-          v-else-if="result.status === 'error'"
-          class="result-state result-state--error"
-        >
-          {{ result.message }}
-        </p>
-        <p v-else class="result-state">
-          {{ result.message }}
-        </p>
+          <p v-else :key="`idle-${result.message}`" class="result-state">
+            {{ result.message }}
+          </p>
+        </Transition>
       </article>
     </section>
   </div>
