@@ -4,6 +4,14 @@ import type { ToolDefinition } from '@/types/tool'
 
 const toolCatalog: ToolDefinition[] = [
   {
+    id: 'worktime',
+    name: '工时日历',
+    description: '按月录入上下班时间，自动统计每日和当月工时结论。',
+    path: '/tools/worktime',
+    status: 'available',
+    tags: ['效率工具', '工时统计'],
+  },
+  {
     id: 'timestamp',
     name: '时间戳转换',
     description: '在秒、毫秒时间戳与本地日期时间之间快速互转。',

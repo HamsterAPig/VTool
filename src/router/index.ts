@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import HomePage from '@/features/home/HomePage.vue'
 import TimestampToolPage from '@/features/timestamp-tool/TimestampToolPage.vue'
+import WorktimeToolPage from '@/features/worktime-tool/WorktimeToolPage.vue'
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -15,6 +16,11 @@ export const router = createRouter({
       path: '/tools/timestamp',
       name: 'timestamp-tool',
       component: TimestampToolPage,
+    },
+    {
+      path: '/tools/worktime',
+      name: 'worktime-tool',
+      component: WorktimeToolPage,
     },
   ],
   scrollBehavior() {

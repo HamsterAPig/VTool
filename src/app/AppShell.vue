@@ -9,6 +9,9 @@
 
         <nav class="top-nav" aria-label="Primary">
           <RouterLink class="top-nav__link" to="/">首页</RouterLink>
+          <RouterLink class="top-nav__link" to="/tools/worktime"
+            >工时日历</RouterLink
+          >
           <RouterLink class="top-nav__link" to="/tools/timestamp"
             >时间戳转换</RouterLink
           >

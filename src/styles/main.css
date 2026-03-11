@@ -62,13 +62,18 @@ a {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
 button {
   border: 0;
   cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 
 #app {
@@ -507,6 +512,321 @@ button {
   padding: 0 0 2rem;
 }
 
+.browser-data-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.4rem 1.5rem;
+}
+
+.browser-data-panel__eyebrow,
+.workday-dialog__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  color: var(--color-accent);
+  background: rgba(20, 184, 166, 0.1);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.browser-data-panel__copy h2,
+.workday-dialog__header h2 {
+  margin: 0.8rem 0 0.5rem;
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
+}
+
+.browser-data-panel__copy p,
+.browser-data-panel__status,
+.worktime-summary-card p,
+.worktime-board__shortcut,
+.worktime-calendar__day-note,
+.workday-dialog__hint {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.browser-data-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.browser-data-panel__import {
+  position: relative;
+  overflow: hidden;
+}
+
+.browser-data-panel__input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.worktime-page,
+.worktime-overview {
+  display: grid;
+  gap: 1rem;
+}
+
+.worktime-overview {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.worktime-summary-card {
+  padding: 1.25rem;
+}
+
+.worktime-summary-card__label {
+  display: block;
+  margin-bottom: 0.6rem;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.worktime-summary-card strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.worktime-board {
+  padding: 1.5rem;
+}
+
+.worktime-board__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.worktime-board__toolbar-group,
+.worktime-board__toolbar-center {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.worktime-board__toolbar-center {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.worktime-board__picker {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 132px;
+}
+
+.worktime-board__picker span {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.worktime-board__shortcut {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  background: rgba(114, 129, 255, 0.08);
+  border-radius: var(--radius-md);
+}
+
+.worktime-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.worktime-calendar__weekday {
+  padding: 0.85rem 0.5rem;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.worktime-calendar__day {
+  display: grid;
+  align-content: start;
+  gap: 0.8rem;
+  min-height: 170px;
+  padding: 1rem;
+  color: var(--color-text);
+  text-align: left;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(105, 121, 166, 0.14);
+  border-radius: 22px;
+  box-shadow: 0 12px 28px rgba(124, 138, 171, 0.08);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.worktime-calendar__day:hover {
+  transform: translateY(-2px);
+  border-color: rgba(66, 99, 235, 0.3);
+  box-shadow: 0 18px 32px rgba(124, 138, 171, 0.12);
+}
+
+.worktime-calendar__day--muted {
+  opacity: 0.55;
+}
+
+.worktime-calendar__day--today {
+  border-color: rgba(66, 99, 235, 0.45);
+}
+
+.worktime-calendar__day--selected {
+  box-shadow: 0 0 0 3px rgba(66, 99, 235, 0.14);
+}
+
+.worktime-calendar__day--positive {
+  background: linear-gradient(180deg, rgba(227, 250, 245, 0.94), white);
+}
+
+.worktime-calendar__day--negative {
+  background: linear-gradient(180deg, rgba(255, 241, 241, 0.94), white);
+}
+
+.worktime-calendar__day-top,
+.worktime-calendar__day-main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.worktime-calendar__day-number {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.worktime-calendar__day-badge {
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  color: var(--color-primary);
+  background: rgba(66, 99, 235, 0.1);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.worktime-calendar__day-main {
+  flex-direction: column;
+}
+
+.worktime-calendar__day-main strong {
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+
+.worktime-calendar__day-main span {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+}
+
+.worktime-calendar__day-note {
+  font-size: 0.88rem;
+}
+
+.workday-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(23, 32, 51, 0.24);
+  backdrop-filter: blur(12px);
+}
+
+.workday-dialog__panel {
+  width: min(100%, 640px);
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 30px;
+  box-shadow: 0 28px 64px rgba(89, 103, 138, 0.22);
+}
+
+.workday-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.workday-dialog__close {
+  width: 2.6rem;
+  height: 2.6rem;
+  color: var(--color-text);
+  background: rgba(114, 129, 255, 0.08);
+  border-radius: 999px;
+  font-size: 1.5rem;
+}
+
+.workday-dialog__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.workday-dialog__summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.workday-dialog__summary-item {
+  padding: 1rem;
+  background: rgba(246, 248, 255, 0.96);
+  border-radius: var(--radius-md);
+}
+
+.workday-dialog__summary-item span {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+}
+
+.workday-dialog__summary-item strong {
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.workday-dialog__error {
+  margin: 1rem 0 0;
+  padding: 0.9rem 1rem;
+  color: var(--color-error);
+  background: rgba(209, 67, 67, 0.08);
+  border-radius: var(--radius-md);
+}
+
+.workday-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.workday-dialog__hint {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
 .footer-row {
   display: flex;
   align-items: center;
@@ -543,12 +863,37 @@ button {
 @media (max-width: 960px) {
   .hero-panel,
   .tool-layout,
-  .tool-grid {
+  .tool-grid,
+  .worktime-overview {
     grid-template-columns: 1fr;
   }
 
   .footer-row {
     display: grid;
+  }
+
+  .browser-data-panel,
+  .worktime-board__toolbar,
+  .workday-dialog__actions {
+    align-items: stretch;
+  }
+
+  .browser-data-panel,
+  .worktime-board__toolbar {
+    flex-direction: column;
+  }
+
+  .worktime-calendar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .worktime-calendar__weekday {
+    display: none;
+  }
+
+  .workday-dialog__fields,
+  .workday-dialog__summary {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -557,7 +902,9 @@ button {
   .top-nav,
   .result-item,
   .hero-panel__actions,
-  .panel-actions {
+  .panel-actions,
+  .browser-data-panel__actions,
+  .workday-dialog__actions {
     flex-direction: column;
     align-items: stretch;
   }
@@ -568,12 +915,22 @@ button {
 
   .hero-panel,
   .tool-panel,
-  .result-panel {
+  .result-panel,
+  .worktime-board,
+  .workday-dialog__panel {
     padding: 1.2rem;
   }
 
   .hero-panel h1,
   .tool-hero h1 {
     font-size: 2.5rem;
+  }
+
+  .worktime-calendar {
+    grid-template-columns: 1fr;
+  }
+
+  .worktime-calendar__day {
+    min-height: 144px;
   }
 }

@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 import HomePage from '@/features/home/HomePage.vue'
 
 describe('HomePage', () => {
-  it('renders the timestamp tool entry and upcoming tools', () => {
+  it('renders the worktime entry and upcoming tools', () => {
     const wrapper = mount(HomePage, {
       global: {
         plugins: [createPinia()],
@@ -15,8 +15,9 @@ describe('HomePage', () => {
       },
     })
 
+    expect(wrapper.text()).toContain('工时日历')
     expect(wrapper.text()).toContain('时间戳转换')
     expect(wrapper.text()).toContain('JSON 工具')
-    expect(wrapper.text()).toContain('立即使用时间戳转换')
+    expect(wrapper.text()).toContain('立即使用工时日历')
   })
 })
