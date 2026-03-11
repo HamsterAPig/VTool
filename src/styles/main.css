@@ -502,6 +502,11 @@ button:disabled {
   background: rgba(209, 67, 67, 0.08);
 }
 
+.result-state--warning {
+  color: #9a6700;
+  background: rgba(255, 185, 72, 0.16);
+}
+
 .result-list {
   display: grid;
   gap: 1rem;
@@ -521,6 +526,99 @@ button:disabled {
 .result-item__value {
   display: block;
   word-break: break-word;
+}
+
+.time-frequency-panel,
+.time-frequency-result,
+.time-frequency-result__stack,
+.time-frequency-group {
+  display: grid;
+  gap: 1rem;
+}
+
+.time-frequency-panel__input {
+  font-family: var(--font-number);
+  font-size: clamp(1.25rem, 1.8vw, 1.6rem);
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.03em;
+}
+
+.time-frequency-panel__units {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.time-frequency-panel__hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.94rem;
+  line-height: 1.7;
+}
+
+.time-frequency-main-result {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1.3rem;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(20, 184, 166, 0.2),
+      transparent 34%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(244, 248, 255, 0.9));
+  border: 1px solid rgba(105, 121, 166, 0.12);
+  border-radius: 24px;
+}
+
+.time-frequency-main-result__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.35rem 0.72rem;
+  border-radius: 999px;
+  color: var(--color-accent);
+  background: rgba(20, 184, 166, 0.1);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.time-frequency-main-result__source,
+.time-frequency-group__header p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.time-frequency-main-result strong {
+  font-family: var(--font-number);
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.time-frequency-main-result p:last-of-type {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.time-frequency-group-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.time-frequency-group {
+  padding: 1.1rem;
+  background: rgba(255, 255, 255, 0.54);
+  border: 1px solid rgba(105, 121, 166, 0.1);
+  border-radius: 24px;
+}
+
+.time-frequency-group__header h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.15rem;
 }
 
 .site-footer {
@@ -1090,7 +1188,8 @@ button:disabled {
   .hero-panel,
   .tool-layout,
   .tool-grid,
-  .worktime-overview {
+  .worktime-overview,
+  .time-frequency-group-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1139,7 +1238,8 @@ button:disabled {
   .browser-data-panel__actions,
   .workday-dialog__actions,
   .worktime-rules__editor-actions,
-  .worktime-rules__override-create {
+  .worktime-rules__override-create,
+  .time-frequency-panel__units {
     flex-direction: column;
     align-items: stretch;
   }
