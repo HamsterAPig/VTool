@@ -536,17 +536,91 @@ button:disabled {
   gap: 1rem;
 }
 
+.time-frequency-switch {
+  padding: 0.45rem;
+  background: linear-gradient(
+    180deg,
+    rgba(241, 244, 255, 0.96),
+    rgba(255, 255, 255, 0.9)
+  );
+  border: 1px solid rgba(111, 127, 178, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.time-frequency-switch__item {
+  position: relative;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.time-frequency-switch__item.segment__item--active {
+  background: linear-gradient(180deg, white, rgba(247, 249, 255, 0.96));
+  box-shadow:
+    0 10px 24px rgba(116, 128, 167, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.time-frequency-panel__field-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.time-frequency-panel__auto-note {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.68rem;
+  border-radius: 999px;
+  color: var(--color-accent);
+  background: rgba(20, 184, 166, 0.12);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.time-frequency-panel__control-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px;
+  gap: 0.85rem;
+  align-items: stretch;
+}
+
 .time-frequency-panel__input {
+  min-height: 64px;
   font-family: var(--font-number);
   font-size: clamp(1.25rem, 1.8vw, 1.6rem);
   font-variant-numeric: tabular-nums lining-nums;
   letter-spacing: -0.03em;
 }
 
-.time-frequency-panel__units {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
+.time-frequency-panel__select-wrap {
+  position: relative;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.time-frequency-panel__select-label {
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.time-frequency-panel__select {
+  min-height: 64px;
+  padding-right: 2.8rem;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--color-primary) 50%),
+    linear-gradient(135deg, var(--color-primary) 50%, transparent 50%);
+  background-position:
+    calc(100% - 24px) calc(50% - 3px),
+    calc(100% - 18px) calc(50% - 3px);
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.time-frequency-panel__actions {
+  margin-top: 0.25rem;
 }
 
 .time-frequency-panel__hint {
@@ -554,6 +628,16 @@ button:disabled {
   color: var(--color-text-muted);
   font-size: 0.94rem;
   line-height: 1.7;
+}
+
+.time-frequency-action {
+  min-height: 46px;
+  padding-inline: 1.15rem;
+  box-shadow: 0 14px 28px rgba(66, 99, 235, 0.18);
+}
+
+.time-frequency-action--secondary {
+  box-shadow: none;
 }
 
 .time-frequency-main-result {
@@ -603,6 +687,10 @@ button:disabled {
   color: var(--color-text-muted);
 }
 
+.time-frequency-main-result__actions {
+  margin-top: 0.2rem;
+}
+
 .time-frequency-group-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -619,6 +707,29 @@ button:disabled {
 .time-frequency-group__header h3 {
   margin: 0 0 0.35rem;
   font-size: 1.15rem;
+}
+
+.time-frequency-copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  padding: 0.72rem 0.95rem;
+  color: var(--color-primary);
+  background: rgba(66, 99, 235, 0.08);
+  border: 1px solid rgba(66, 99, 235, 0.14);
+  border-radius: 14px;
+  font-weight: 700;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.time-frequency-copy-button:hover {
+  transform: translateY(-1px);
+  background: rgba(66, 99, 235, 0.12);
+  border-color: rgba(66, 99, 235, 0.2);
 }
 
 .site-footer {
@@ -1220,7 +1331,8 @@ button:disabled {
   .workday-dialog__fields,
   .workday-dialog__summary,
   .worktime-rules__top,
-  .worktime-rules__editor-head {
+  .worktime-rules__editor-head,
+  .time-frequency-panel__control-row {
     grid-template-columns: 1fr;
   }
 
@@ -1238,8 +1350,7 @@ button:disabled {
   .browser-data-panel__actions,
   .workday-dialog__actions,
   .worktime-rules__editor-actions,
-  .worktime-rules__override-create,
-  .time-frequency-panel__units {
+  .worktime-rules__override-create {
     flex-direction: column;
     align-items: stretch;
   }
@@ -1254,6 +1365,11 @@ button:disabled {
   .worktime-board,
   .workday-dialog__panel {
     padding: 1.2rem;
+  }
+
+  .time-frequency-panel__field-head {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .hero-panel h1,

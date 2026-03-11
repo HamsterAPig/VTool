@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { SupportedUnit } from '@/features/time-frequency-tool/timeFrequency'
 import { useTimeFrequencyTool } from '@/features/time-frequency-tool/useTimeFrequencyTool'
 
 const {
@@ -16,6 +17,12 @@ const {
   swapDimension,
   unitOptions,
 } = useTimeFrequencyTool()
+
+function handleUnitChange(event: Event) {
+  const target = event.target as HTMLSelectElement
+
+  setInputUnit(target.value as SupportedUnit)
+}
 </script>
 
 <template>
@@ -31,9 +38,9 @@ const {
 
     <section class="tool-layout">
       <article class="surface-panel tool-panel time-frequency-panel">
-        <div class="segment">
+        <div class="segment time-frequency-switch">
           <button
-            class="segment__item"
+            class="segment__item time-frequency-switch__item"
             :class="{ 'segment__item--active': inputDimension === 'time' }"
             type="button"
             @click="setInputDimension('time')"
@@ -41,7 +48,7 @@ const {
             从时间输入
           </button>
           <button
-            class="segment__item"
+            class="segment__item time-frequency-switch__item"
             :class="{ 'segment__item--active': inputDimension === 'frequency' }"
             type="button"
             @click="setInputDimension('frequency')"
@@ -51,59 +58,68 @@ const {
         </div>
 
         <div class="field-group">
-          <label class="field-label" for="time-frequency-input">输入数值</label>
-          <input
-            id="time-frequency-input"
-            v-model="inputValue"
-            class="glass-input time-frequency-panel__input"
-            inputmode="decimal"
-            placeholder="例如 0.5、50、1e6"
-            type="text"
-          />
-        </div>
-
-        <div class="field-group">
-          <span class="field-label">输入单位</span>
-          <div
-            class="time-frequency-panel__units"
-            role="group"
-            aria-label="Unit options"
-          >
-            <button
-              v-for="option in unitOptions"
-              :key="option.unit"
-              class="precision-pill"
-              :class="{ 'precision-pill--active': inputUnit === option.unit }"
-              type="button"
-              @click="setInputUnit(option.unit)"
+          <div class="time-frequency-panel__field-head">
+            <label class="field-label" for="time-frequency-input"
+              >输入数值</label
             >
-              {{ option.label }} · {{ option.unit }}
-            </button>
+            <span class="time-frequency-panel__auto-note">输入后自动换算</span>
+          </div>
+
+          <div class="time-frequency-panel__control-row">
+            <input
+              id="time-frequency-input"
+              v-model="inputValue"
+              class="glass-input time-frequency-panel__input"
+              inputmode="decimal"
+              placeholder="例如 0.5、50、1e6"
+              type="text"
+            />
+
+            <label
+              class="time-frequency-panel__select-wrap"
+              for="time-frequency-unit"
+            >
+              <span class="time-frequency-panel__select-label">单位</span>
+              <select
+                id="time-frequency-unit"
+                class="glass-input time-frequency-panel__select"
+                :value="inputUnit"
+                @change="handleUnitChange"
+              >
+                <option
+                  v-for="option in unitOptions"
+                  :key="option.unit"
+                  :value="option.unit"
+                >
+                  {{ option.label }} ({{ option.unit }})
+                </option>
+              </select>
+            </label>
           </div>
         </div>
 
         <p class="time-frequency-panel__hint">
-          当前首版支持 `s / ms / us / ns` 与 `Hz / kHz / MHz /
-          GHz`，并在结果侧优先展示最适合的单位。
+          当前支持 `s / ms / us / ns` 与 `Hz / kHz / MHz /
+          GHz`。修改数值或单位后，右侧结果会立即自动刷新。
         </p>
 
-        <div class="panel-actions">
+        <div class="panel-actions time-frequency-panel__actions">
           <button
-            class="button button--primary"
+            class="button button--primary time-frequency-action"
             type="button"
             @click="swapDimension"
           >
             切换到{{ oppositeDimensionLabel }}输入
           </button>
           <button
-            class="button button--ghost"
+            class="button button--ghost time-frequency-action time-frequency-action--secondary"
             type="button"
             @click="fillExample"
           >
             填入示例
           </button>
           <button
-            class="button button--ghost"
+            class="button button--ghost time-frequency-action time-frequency-action--secondary"
             type="button"
             @click="clearInputs"
           >
@@ -132,9 +148,9 @@ const {
             <strong>{{ result.data.mainState.mainDisplay }}</strong>
             <p>{{ result.data.mainState.mainDescription }}</p>
 
-            <div class="panel-actions">
+            <div class="panel-actions time-frequency-main-result__actions">
               <button
-                class="button button--primary"
+                class="button button--primary time-frequency-action"
                 type="button"
                 @click="copyValue(result.data.mainState.copyValue)"
               >
@@ -180,7 +196,7 @@ const {
                     }}</strong>
                   </div>
                   <button
-                    class="button button--ghost"
+                    class="time-frequency-copy-button"
                     type="button"
                     @click="copyValue(item.display)"
                   >
@@ -219,7 +235,7 @@ const {
                     }}</strong>
                   </div>
                   <button
-                    class="button button--ghost"
+                    class="time-frequency-copy-button"
                     type="button"
                     @click="copyValue(item.display)"
                   >
