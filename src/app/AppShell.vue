@@ -12,6 +12,9 @@
           <RouterLink class="top-nav__link" to="/tools/worktime"
             >工时日历</RouterLink
           >
+          <RouterLink class="top-nav__link" to="/tools/time-frequency"
+            >时间 / 频率换算</RouterLink
+          >
           <RouterLink class="top-nav__link" to="/tools/timestamp"
             >时间戳转换</RouterLink
           >

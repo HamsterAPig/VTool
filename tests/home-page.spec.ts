@@ -17,7 +17,9 @@ describe('HomePage', () => {
 
     expect(wrapper.text()).toContain('工时日历')
     expect(wrapper.text()).toContain('时间戳转换')
+    expect(wrapper.text()).toContain('时间 / 频率换算')
     expect(wrapper.text()).toContain('JSON 工具')
     expect(wrapper.text()).toContain('立即使用工时日历')
+    expect(wrapper.text()).toContain('打开时间 / 频率换算')
   })
 })

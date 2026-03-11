@@ -20,6 +20,14 @@ const toolCatalog: ToolDefinition[] = [
     tags: ['开发调试', '日期时间'],
   },
   {
+    id: 'time-frequency',
+    name: '时间 / 频率换算',
+    description: '在时间单位、频率单位以及两者倒数关系之间快速换算。',
+    path: '/tools/time-frequency',
+    status: 'available',
+    tags: ['开发调试', '信号换算'],
+  },
+  {
     id: 'json',
     name: 'JSON 工具',
     description: '后续会补充格式化、压缩、校验等高频能力。',
