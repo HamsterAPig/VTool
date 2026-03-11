@@ -1,0 +1,64 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { RouterLink } from 'vue-router'
+
+import SectionHeader from '@/components/SectionHeader.vue'
+import ToolCard from '@/components/ToolCard.vue'
+import { useToolCatalogStore } from '@/stores/toolCatalog'
+
+const toolCatalogStore = useToolCatalogStore()
+
+const tools = computed(() => toolCatalogStore.tools)
+const readyCount = computed(
+  () =>
+    toolCatalogStore.tools.filter((tool) => tool.status === 'available').length,
+)
+</script>
+
+<template>
+  <div class="home-page">
+    <section class="hero-panel">
+      <div class="hero-panel__copy">
+        <span class="hero-badge">Modern Utility Workspace</span>
+        <h1>把常用工具做得更顺手，也更好看。</h1>
+        <p class="hero-panel__description">
+          VTool 是一个面向开发和日常效率场景的工具站。首版先交付时间戳转换，
+          首页保持清晰导航，后续工具会沿着同一套视觉和交互规范持续扩展。
+        </p>
+
+        <div class="hero-panel__actions">
+          <RouterLink class="button button--primary" to="/tools/timestamp">
+            立即使用时间戳转换
+          </RouterLink>
+          <a class="button button--ghost" href="#tool-grid">浏览工具入口</a>
+        </div>
+      </div>
+
+      <aside class="hero-panel__aside">
+        <div class="hero-stat">
+          <span>首版可用工具</span>
+          <strong>{{ readyCount }}</strong>
+        </div>
+        <div class="hero-stat">
+          <span>计划中的工具方向</span>
+          <strong>{{ tools.length }}</strong>
+        </div>
+        <p class="hero-panel__note">
+          视觉基调采用浅色光晕科技感，强调留白、渐变和轻量玻璃质感。
+        </p>
+      </aside>
+    </section>
+
+    <section id="tool-grid" class="content-section">
+      <SectionHeader
+        eyebrow="Tool Directory"
+        title="从首页直接进入具体工具"
+        description="首版以工具导航为核心，不做臃肿门户。每个工具都保持统一壳层、统一视觉、统一交互节奏。"
+      />
+
+      <div class="tool-grid">
+        <ToolCard v-for="tool in tools" :key="tool.id" :tool="tool" />
+      </div>
+    </section>
+  </div>
+</template>
