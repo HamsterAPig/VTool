@@ -1,7 +1,7 @@
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
-import '@fontsource-variable/outfit/wght.css'
+import '@fontsource-variable/manrope/wght.css'
 
 import App from '@/app/App.vue'
 import { router, updateDocumentTitle } from '@/router'
