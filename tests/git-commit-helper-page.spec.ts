@@ -13,17 +13,22 @@ describe('GitCommitHelperPage', () => {
     })
   })
 
-  it('renders the default recommendation and empty-state hint', () => {
+  it('renders the workspace above the result board with full catalog hints', () => {
     const wrapper = mount(GitCommitHelperPage, {
       attachTo: document.body,
     })
 
+    const workspace = wrapper.get('.git-commit-helper-workspace').element
+    const resultBoard = wrapper.get('.git-commit-helper-result-board').element
+
     expect(wrapper.text()).toContain('Git 提交辅助')
+    expect(wrapper.text()).toContain('内置')
     expect(wrapper.get('#git-commit-type').text()).toContain('新增功能 (feat)')
-    expect(wrapper.text()).toContain(':sparkles:')
-    expect(wrapper.text()).toContain(
-      '输入 description 后，这里会生成完整建议文案。',
-    )
+    expect(wrapper.find('#git-commit-description').exists()).toBe(true)
+    expect(
+      workspace.compareDocumentPosition(resultBoard) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).not.toBe(0)
   })
 
   it('constrains the type and refreshes the message after switching emoji', async () => {
@@ -46,16 +51,30 @@ describe('GitCommitHelperPage', () => {
     await wrapper.get('#git-commit-type').trigger('click')
 
     const option = document.body.querySelector(
-      '[data-select-option-value="test"]',
+      '[data-select-option-value="build"]',
     ) as HTMLButtonElement | null
 
     option?.click()
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.text()).toContain(':white_check_mark:')
-    expect(
-      wrapper.get('[data-emoji-code=":white_check_mark:"]').classes(),
-    ).toContain('git-commit-helper-emoji-card--active')
+    expect(wrapper.text()).toContain(':package:')
+    expect(wrapper.get('[data-emoji-code=":package:"]').classes()).toContain(
+      'git-commit-helper-emoji-card--active',
+    )
+  })
+
+  it('filters the emoji catalog without clearing the current selection', async () => {
+    const wrapper = mount(GitCommitHelperPage, {
+      attachTo: document.body,
+    })
+
+    await wrapper.get('#git-commit-emoji-search').setValue('bug')
+    await wrapper.get('#git-commit-description').setValue('新增首页布局')
+
+    expect(wrapper.findAll('[data-emoji-code]').length).toBe(1)
+    expect(wrapper.find('[data-emoji-code=":sparkles:"]').exists()).toBe(false)
+    expect(wrapper.text()).toContain(':sparkles: feat: 新增首页布局')
+    expect(wrapper.text()).toContain('当前已选 ✨ :sparkles:')
   })
 
   it('updates all four result cards after entering scope and description', async () => {

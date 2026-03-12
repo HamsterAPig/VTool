@@ -4,26 +4,62 @@ import {
   applyEmojiSelection,
   applyTypeSelection,
   buildCommitSuggestion,
+  buildGitEmojiSections,
   getCompatibleCommitTypes,
   getCopyTargetValue,
   getDefaultCommitDraftState,
+  gitEmojiDefinitions,
+  matchesGitEmojiSearch,
 } from '@/features/git-commit-helper/gitCommitHelper'
 
 describe('git commit helper utilities', () => {
-  it('constrains commit types after selecting an emoji', () => {
-    const nextDraft = applyEmojiSelection(getDefaultCommitDraftState(), ':bug:')
+  it('ships a near-complete gitmoji catalog', () => {
+    expect(gitEmojiDefinitions.length).toBeGreaterThan(70)
+    expect(
+      gitEmojiDefinitions.find((item) => item.code === ':passport_control:'),
+    ).toBeDefined()
+    expect(
+      gitEmojiDefinitions.find((item) => item.code === ':airplane:'),
+    ).toBeDefined()
+  })
 
-    expect(nextDraft.type).toBe('fix')
-    expect(getCompatibleCommitTypes(':bug:').map((item) => item.type)).toEqual([
-      'fix',
-    ])
+  it('constrains commit types after selecting an emoji', () => {
+    const nextDraft = applyEmojiSelection(
+      getDefaultCommitDraftState(),
+      ':passport_control:',
+    )
+
+    expect(nextDraft.type).toBe('feat')
+    expect(
+      getCompatibleCommitTypes(':passport_control:').map((item) => item.type),
+    ).toEqual(['feat', 'fix'])
   })
 
   it('syncs the recommended emoji after selecting a type', () => {
-    const nextDraft = applyTypeSelection(getDefaultCommitDraftState(), 'test')
+    const nextDraft = applyTypeSelection(getDefaultCommitDraftState(), 'build')
 
-    expect(nextDraft.emojiCode).toBe(':white_check_mark:')
-    expect(nextDraft.type).toBe('test')
+    expect(nextDraft.emojiCode).toBe(':package:')
+    expect(nextDraft.type).toBe('build')
+  })
+
+  it('supports emoji search by code, name and Chinese description', () => {
+    const bugEmoji = gitEmojiDefinitions.find((item) => item.code === ':bug:')
+    const wheelchairEmoji = gitEmojiDefinitions.find(
+      (item) => item.code === ':wheelchair:',
+    )
+
+    expect(bugEmoji).toBeDefined()
+    expect(wheelchairEmoji).toBeDefined()
+    expect(matchesGitEmojiSearch(bugEmoji!, 'bug')).toBe(true)
+    expect(matchesGitEmojiSearch(bugEmoji!, ':bug:')).toBe(true)
+    expect(matchesGitEmojiSearch(wheelchairEmoji!, '可访问性')).toBe(true)
+  })
+
+  it('groups matching emoji into recommended, compatible and extended sections', () => {
+    const sections = buildGitEmojiSections('feat', '修复')
+
+    expect(sections.map((section) => section.id)).toEqual(['extended'])
+    expect(sections[0]?.items.some((item) => item.code === ':bug:')).toBe(true)
   })
 
   it('switches only the prefix when toggling between code and emoji styles', () => {

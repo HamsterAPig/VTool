@@ -4,11 +4,13 @@ import {
   applyEmojiSelection,
   applyTypeSelection,
   buildCommitSuggestion,
+  buildGitEmojiSections,
   commitTypeDefinitions,
+  gitEmojiDefinitions,
   getCompatibleCommitTypes,
   getCopyTargetValue,
   getDefaultCommitDraftState,
-  getPrioritizedGitEmojis,
+  type GitEmojiDefinition,
   type CommitCopyTarget,
   type CommitDraftState,
   type CommitMessageStyle,
@@ -42,6 +44,7 @@ function createEmptyCopyFeedback(): CopyFeedbackMap {
 export function useGitCommitHelper() {
   const draft = reactive<CommitDraftState>(getDefaultCommitDraftState())
   const selectionDriver = ref<'emoji' | 'type'>('type')
+  const emojiSearchQuery = ref('')
   const copyFeedback = reactive<CopyFeedbackMap>(createEmptyCopyFeedback())
   const isCopying = reactive<Record<CommitCopyTarget, boolean>>({
     message: false,
@@ -54,12 +57,20 @@ export function useGitCommitHelper() {
 
   const selectedEmojiCode = computed(() => draft.emojiCode)
   const selectedType = computed(() => draft.type)
+  const selectedEmojiDefinition = computed<GitEmojiDefinition | undefined>(() =>
+    gitEmojiDefinitions.find((item) => item.code === draft.emojiCode),
+  )
   const availableTypes = computed(() =>
     selectionDriver.value === 'emoji'
       ? getCompatibleCommitTypes(draft.emojiCode)
       : commitTypeDefinitions,
   )
-  const availableEmojis = computed(() => getPrioritizedGitEmojis(draft.type))
+  const emojiSections = computed(() =>
+    buildGitEmojiSections(draft.type, emojiSearchQuery.value),
+  )
+  const visibleEmojiCount = computed(() =>
+    emojiSections.value.reduce((sum, section) => sum + section.items.length, 0),
+  )
   const suggestion = computed(() => buildCommitSuggestion(draft))
 
   function applyDraft(nextDraft: CommitDraftState) {
@@ -118,6 +129,10 @@ export function useGitCommitHelper() {
     draft.description = description
   }
 
+  function setEmojiSearchQuery(value: string) {
+    emojiSearchQuery.value = value
+  }
+
   async function copyTarget(target: CommitCopyTarget) {
     const value = getCopyTargetValue(suggestion.value, target)
 
@@ -147,20 +162,25 @@ export function useGitCommitHelper() {
   })
 
   return {
-    availableEmojis,
     availableTypes,
     copyFeedback,
     copyTarget,
     draft,
+    emojiSearchQuery,
+    emojiSections,
     helperNotice,
     isCopying,
+    selectedEmojiDefinition,
     selectedEmojiCode,
     selectedType,
+    setEmojiSearchQuery,
     setDescription,
     setEmoji,
     setScope,
     setStyle,
     setType,
     suggestion,
+    totalEmojiCount: gitEmojiDefinitions.length,
+    visibleEmojiCount,
   }
 }
