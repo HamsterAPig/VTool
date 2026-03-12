@@ -19,12 +19,12 @@ const readyCount = computed(
   <div class="home-page">
     <section class="hero-panel">
       <div class="hero-panel__copy">
-        <span class="hero-badge">Modern Utility Workspace</span>
+        <span class="hero-badge">Curated Utility Workspace</span>
         <h1>把常用工具做得更顺手，也更好看。</h1>
         <p class="hero-panel__description">
           VTool
           是一个面向开发和日常效率场景的工具站。当前已提供工时日历、时间戳转换和时间
-          / 频率换算，后续工具会沿着同一套视觉和交互规范持续扩展。
+          / 频率换算，并支持在不同主题下保持一致的浏览与操作体验。
         </p>
 
         <div class="hero-panel__actions">
@@ -47,7 +47,7 @@ const readyCount = computed(
           <strong>{{ tools.length }}</strong>
         </div>
         <p class="hero-panel__note">
-          新版界面转向暖白编辑台风格，强调中文阅读节奏、数字辨识度和长时间使用的舒适感。
+          顶部现已支持主题切换，分别提供冷白科技、玉色雅室和玫瑰实验室三种精致浅色方案。
         </p>
       </aside>
     </section>

@@ -7,18 +7,21 @@
           <span>VTool</span>
         </RouterLink>
 
-        <nav class="top-nav" aria-label="Primary">
-          <RouterLink class="top-nav__link" to="/">首页</RouterLink>
-          <RouterLink class="top-nav__link" to="/tools/worktime"
-            >工时日历</RouterLink
-          >
-          <RouterLink class="top-nav__link" to="/tools/time-frequency"
-            >时间 / 频率换算</RouterLink
-          >
-          <RouterLink class="top-nav__link" to="/tools/timestamp"
-            >时间戳转换</RouterLink
-          >
-        </nav>
+        <div class="shell-row__actions">
+          <nav class="top-nav" aria-label="Primary">
+            <RouterLink class="top-nav__link" to="/">首页</RouterLink>
+            <RouterLink class="top-nav__link" to="/tools/worktime"
+              >工时日历</RouterLink
+            >
+            <RouterLink class="top-nav__link" to="/tools/time-frequency"
+              >时间 / 频率换算</RouterLink
+            >
+            <RouterLink class="top-nav__link" to="/tools/timestamp"
+              >时间戳转换</RouterLink
+            >
+          </nav>
+          <ThemeSwitcher />
+        </div>
       </div>
     </header>
 
@@ -48,4 +51,6 @@
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+
+import ThemeSwitcher from '@/components/ThemeSwitcher.vue'
 </script>

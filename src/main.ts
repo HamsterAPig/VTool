@@ -2,10 +2,17 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
 import '@fontsource-variable/manrope/wght.css'
+import '@fontsource-variable/outfit/wght.css'
 
 import App from '@/app/App.vue'
 import { router, updateDocumentTitle } from '@/router'
+import {
+  applyThemeToDocument,
+  loadThemePreference,
+} from '@/stores/themePreference'
 import '@/styles/main.css'
+
+applyThemeToDocument(loadThemePreference())
 
 const app = createApp(App)
 
