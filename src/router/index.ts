@@ -5,6 +5,7 @@ import {
 } from 'vue-router'
 
 import HomePage from '@/features/home/HomePage.vue'
+import GitCommitHelperPage from '@/features/git-commit-helper/GitCommitHelperPage.vue'
 import TimeFrequencyToolPage from '@/features/time-frequency-tool/TimeFrequencyToolPage.vue'
 import TimestampToolPage from '@/features/timestamp-tool/TimestampToolPage.vue'
 import WorktimeToolPage from '@/features/worktime-tool/WorktimeToolPage.vue'
@@ -24,6 +25,14 @@ export const router = createRouter({
       component: HomePage,
       meta: {
         title: '首页',
+      },
+    },
+    {
+      path: '/tools/git-commit-helper',
+      name: 'git-commit-helper',
+      component: GitCommitHelperPage,
+      meta: {
+        title: 'Git 提交辅助',
       },
     },
     {

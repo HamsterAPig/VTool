@@ -15,6 +15,7 @@ describe('HomePage', () => {
       },
     })
 
+    expect(wrapper.text()).toContain('Git 提交辅助')
     expect(wrapper.text()).toContain('工时日历')
     expect(wrapper.text()).toContain('时间戳转换')
     expect(wrapper.text()).toContain('时间 / 频率换算')

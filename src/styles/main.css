@@ -1442,6 +1442,219 @@ button:disabled {
   box-shadow: var(--shadow-card);
 }
 
+.git-commit-helper-hero__rules,
+.git-commit-helper-emoji-grid,
+.git-commit-helper-result__stack,
+.git-commit-helper-result__hints {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.git-commit-helper-hero__rules {
+  grid-template-columns: repeat(auto-fit, minmax(140px, max-content));
+}
+
+.git-commit-helper-hero__rule,
+.git-commit-helper-result-card__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.42rem 0.72rem;
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.git-commit-helper-hero__rule {
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.git-commit-helper-panel {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.git-commit-helper-panel__group {
+  margin-top: 0;
+}
+
+.git-commit-helper-panel__head,
+.git-commit-helper-result-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
+.git-commit-helper-panel__head {
+  flex-wrap: wrap;
+}
+
+.git-commit-helper-panel__assist,
+.git-commit-helper-panel__hint,
+.git-commit-helper-result__description {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+}
+
+.git-commit-helper-style-switch {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.git-commit-helper-style-switch__item {
+  display: grid;
+  gap: 0.18rem;
+  justify-items: start;
+  min-height: 72px;
+}
+
+.git-commit-helper-style-switch__item small {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+}
+
+.git-commit-helper-emoji-grid {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+.git-commit-helper-emoji-card,
+.git-commit-helper-result-card {
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  background: var(--surface-card);
+  box-shadow: var(--shadow-card);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 220ms ease,
+    background 220ms ease;
+}
+
+.git-commit-helper-emoji-card {
+  display: grid;
+  gap: 0.4rem;
+  padding: 1rem;
+  text-align: left;
+}
+
+.git-commit-helper-emoji-card:hover,
+.git-commit-helper-result-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-soft);
+}
+
+.git-commit-helper-emoji-card--active {
+  border-color: color-mix(in srgb, var(--color-accent) 68%, white);
+  background:
+    radial-gradient(
+      circle at top right,
+      var(--color-accent-soft),
+      transparent 38%
+    ),
+    var(--surface-card-hover);
+  box-shadow:
+    0 0 0 3px var(--color-primary-soft),
+    var(--shadow-card);
+}
+
+.git-commit-helper-emoji-card__emoji {
+  font-size: 1.5rem;
+}
+
+.git-commit-helper-emoji-card__code {
+  font-family: var(--font-ui);
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+.git-commit-helper-emoji-card__description {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.git-commit-helper-panel__textarea {
+  min-height: 136px;
+  resize: vertical;
+}
+
+.git-commit-helper-result__stack {
+  gap: 1rem;
+}
+
+.git-commit-helper-result-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.15rem;
+}
+
+.git-commit-helper-result-card--primary {
+  background:
+    radial-gradient(
+      circle at top right,
+      var(--color-accent-soft),
+      transparent 35%
+    ),
+    var(--surface-card-hover);
+}
+
+.git-commit-helper-result-card__head strong {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.git-commit-helper-result-card__eyebrow {
+  color: var(--badge-text);
+  background: var(--badge-bg);
+}
+
+.git-commit-helper-result-card__copy {
+  white-space: nowrap;
+}
+
+.git-commit-helper-result-card__value {
+  margin: 0;
+  padding: 1rem 1.05rem;
+  border-radius: 18px;
+  background: var(--surface-muted);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.git-commit-helper-result-card__value--message {
+  font-size: 1.1rem;
+}
+
+.git-commit-helper-result__mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.git-commit-helper-result-card--mini .git-commit-helper-result-card__head {
+  align-items: center;
+}
+
+.git-commit-helper-result__hint {
+  margin: 0;
+  padding: 0.92rem 1rem;
+  color: var(--color-accent-strong);
+  background: var(--color-accent-soft);
+  border-radius: 18px;
+}
+
 .browser-data-panel {
   display: flex;
   align-items: center;
@@ -2006,7 +2219,8 @@ button:disabled {
   .workday-dialog__summary,
   .worktime-rules__top,
   .worktime-rules__editor-head,
-  .time-frequency-panel__control-row {
+  .time-frequency-panel__control-row,
+  .git-commit-helper-result__mini-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -2053,12 +2267,19 @@ button:disabled {
   }
 
   .segment,
-  .time-frequency-panel__field-head {
+  .time-frequency-panel__field-head,
+  .git-commit-helper-panel__head,
+  .git-commit-helper-result-card__head {
     grid-template-columns: 1fr;
   }
 
   .time-frequency-panel__field-head {
     display: grid;
+  }
+
+  .git-commit-helper-style-switch,
+  .git-commit-helper-emoji-grid {
+    grid-template-columns: 1fr;
   }
 
   .worktime-rules__segment-row {

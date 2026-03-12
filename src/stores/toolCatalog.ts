@@ -4,6 +4,15 @@ import type { ToolDefinition } from '@/types/tool'
 
 const toolCatalog: ToolDefinition[] = [
   {
+    id: 'git-commit-helper',
+    name: 'Git 提交辅助',
+    description:
+      '根据 Gitmoji 与 Conventional Commits 语义，实时生成提交文案与 git commit 命令。',
+    path: '/tools/git-commit-helper',
+    status: 'available',
+    tags: ['开发调试', 'Git 工作流'],
+  },
+  {
     id: 'worktime',
     name: '工时日历',
     description: '按月录入上下班时间，自动统计每日和当月工时结论。',

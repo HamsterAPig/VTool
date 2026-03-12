@@ -10,6 +10,9 @@
         <div class="shell-row__actions">
           <nav class="top-nav" aria-label="Primary">
             <RouterLink class="top-nav__link" to="/">首页</RouterLink>
+            <RouterLink class="top-nav__link" to="/tools/git-commit-helper">
+              Git 提交辅助
+            </RouterLink>
             <RouterLink class="top-nav__link" to="/tools/worktime"
               >工时日历</RouterLink
             >

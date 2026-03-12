@@ -22,9 +22,9 @@ const readyCount = computed(
         <span class="hero-badge">Curated Utility Workspace</span>
         <h1>把常用工具做得更顺手，也更好看。</h1>
         <p class="hero-panel__description">
-          VTool
-          是一个面向开发和日常效率场景的工具站。当前已提供工时日历、时间戳转换和时间
-          / 频率换算，并支持在不同主题下保持一致的浏览与操作体验。
+          VTool 是一个面向开发和日常效率场景的工具站。当前已提供 Git
+          提交辅助、工时日历、时间戳转换和时间 /
+          频率换算，并支持在不同主题下保持一致的浏览与操作体验。
         </p>
 
         <div class="hero-panel__actions">

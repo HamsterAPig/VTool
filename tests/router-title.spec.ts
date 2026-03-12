@@ -22,6 +22,13 @@ describe('router document title', () => {
     expect(document.title).toBe('VTool|时间 / 频率换算')
   })
 
+  it('updates the title for the git commit helper route', async () => {
+    await router.push('/tools/git-commit-helper')
+    updateDocumentTitle()
+
+    expect(document.title).toBe('VTool|Git 提交辅助')
+  })
+
   it('falls back to the app title when no page title is provided', () => {
     document.title = 'stale'
     updateDocumentTitle({
