@@ -28,8 +28,6 @@ const {
   jumpToToday,
   monthSummary,
   moveMonth,
-  normalizeDraftEndTime,
-  normalizeDraftStartTime,
   openEditor,
   overrideDateInput,
   overrideDates,
@@ -250,8 +248,6 @@ const monthOptions = [
       @close="closeEditor"
       @copy-previous="copyPreviousDay"
       @delete="deleteEditorRecord"
-      @normalize-end-time="normalizeDraftEndTime"
-      @normalize-start-time="normalizeDraftStartTime"
       @save="saveEditor"
       @save-next="saveAndMove(1)"
       @save-previous="saveAndMove(-1)"

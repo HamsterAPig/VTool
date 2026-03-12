@@ -34,7 +34,7 @@ describe('WorktimeToolPage', () => {
     expect(firstDayButton).toBeDefined()
     await firstDayButton!.trigger('click')
 
-    expect(wrapper.findAll('input[type="time"]')).toHaveLength(0)
+    expect(wrapper.findAll('input[type="time"]')).toHaveLength(2)
 
     const timeInputs = wrapper.findAll('.workday-dialog__time-input')
 

@@ -10,7 +10,6 @@ import {
   formatBalanceMinutes,
   formatDurationHours,
   formatMinuteValue,
-  normalizeEditableTimeValue,
   resolveRuleForDate,
   summarizeMonth,
   validateDayTemplate,
@@ -477,14 +476,6 @@ export function useWorktimeCalendar() {
     editorError.value = ''
   }
 
-  function normalizeDraftStartTime() {
-    draftStartTime.value = normalizeEditableTimeValue(draftStartTime.value)
-  }
-
-  function normalizeDraftEndTime() {
-    draftEndTime.value = normalizeEditableTimeValue(draftEndTime.value)
-  }
-
   function moveSelection(amount: number) {
     selectDate(
       formatDateKey(addDays(parseDateKey(selectedDateKey.value), amount)),
@@ -826,7 +817,5 @@ export function useWorktimeCalendar() {
     formatBalanceMinutes,
     formatDurationHours,
     formatMinuteValue,
-    normalizeDraftEndTime,
-    normalizeDraftStartTime,
   }
 }
