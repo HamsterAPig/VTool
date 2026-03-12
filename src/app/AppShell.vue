@@ -39,7 +39,7 @@
           </p>
         </div>
         <p class="footer-row__text">
-          Built with Vue 3, Vite, TypeScript and pnpm.
+          Warm editorial UI for everyday utility tools.
         </p>
       </div>
     </footer>

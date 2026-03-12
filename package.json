@@ -14,7 +14,10 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@fontsource-variable/manrope": "^5.2.8",
     "@fontsource-variable/outfit": "^5.2.8",
+    "@fontsource/noto-sans-sc": "^5.2.9",
+    "@fontsource/noto-serif-sc": "^5.2.8",
     "pinia": "^3.0.4",
     "vue": "^3.5.30",
     "vue-router": "^4.6.4"

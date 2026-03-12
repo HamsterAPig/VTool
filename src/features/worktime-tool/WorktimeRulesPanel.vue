@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
+import BaseSelect from '@/components/BaseSelect.vue'
 import type {
   WeekdayKey,
   WorktimeDayTemplate,
@@ -37,6 +40,34 @@ const emit = defineEmits<{
     value: string,
   ]
 }>()
+
+const segmentTypeOptions = [
+  {
+    description: '纳入目标工时',
+    label: '计薪',
+    value: 'paid',
+  },
+  {
+    description: '午休等不计薪时段',
+    label: '不计薪',
+    value: 'unpaid',
+  },
+] as const
+
+const timeSelectOptions = computed(() =>
+  props.timeOptions.map((time) => ({
+    label: time,
+    value: time,
+  })),
+)
+
+function updateSegmentSelect(
+  segmentId: string,
+  field: 'label' | 'start' | 'end' | 'type',
+  value: string | number,
+) {
+  emit('updateSegment', segmentId, field, String(value))
+}
 </script>
 
 <template>
@@ -203,63 +234,35 @@ const emit = defineEmits<{
               "
             />
 
-            <select
-              :value="segment.type"
+            <BaseSelect
               class="glass-input"
-              @change="
-                emit(
-                  'updateSegment',
-                  segment.id,
-                  'type',
-                  ($event.target as HTMLSelectElement).value,
-                )
+              label="时间段类型"
+              :model-value="segment.type"
+              :options="segmentTypeOptions"
+              @update:model-value="
+                updateSegmentSelect(segment.id, 'type', $event)
               "
-            >
-              <option value="paid">计薪</option>
-              <option value="unpaid">不计薪</option>
-            </select>
+            />
 
-            <select
-              :value="segment.start"
+            <BaseSelect
               class="glass-input"
-              @change="
-                emit(
-                  'updateSegment',
-                  segment.id,
-                  'start',
-                  ($event.target as HTMLSelectElement).value,
-                )
+              label="开始时间"
+              :model-value="segment.start"
+              :options="timeSelectOptions"
+              @update:model-value="
+                updateSegmentSelect(segment.id, 'start', $event)
               "
-            >
-              <option
-                v-for="time in props.timeOptions"
-                :key="time"
-                :value="time"
-              >
-                {{ time }}
-              </option>
-            </select>
+            />
 
-            <select
-              :value="segment.end"
+            <BaseSelect
               class="glass-input"
-              @change="
-                emit(
-                  'updateSegment',
-                  segment.id,
-                  'end',
-                  ($event.target as HTMLSelectElement).value,
-                )
+              label="结束时间"
+              :model-value="segment.end"
+              :options="timeSelectOptions"
+              @update:model-value="
+                updateSegmentSelect(segment.id, 'end', $event)
               "
-            >
-              <option
-                v-for="time in props.timeOptions"
-                :key="time"
-                :value="time"
-              >
-                {{ time }}
-              </option>
-            </select>
+            />
 
             <button
               class="button button--ghost"

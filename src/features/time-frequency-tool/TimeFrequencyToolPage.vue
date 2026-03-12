@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
+import BaseSelect from '@/components/BaseSelect.vue'
 import type { SupportedUnit } from '@/features/time-frequency-tool/timeFrequency'
 import { useTimeFrequencyTool } from '@/features/time-frequency-tool/useTimeFrequencyTool'
 
@@ -18,10 +21,16 @@ const {
   unitOptions,
 } = useTimeFrequencyTool()
 
-function handleUnitChange(event: Event) {
-  const target = event.target as HTMLSelectElement
+const unitSelectOptions = computed(() =>
+  unitOptions.value.map((option) => ({
+    description: inputDimension.value === 'time' ? '时间单位' : '频率单位',
+    label: `${option.label} (${option.unit})`,
+    value: option.unit,
+  })),
+)
 
-  setInputUnit(target.value as SupportedUnit)
+function handleUnitChange(value: string | number) {
+  setInputUnit(value as SupportedUnit)
 }
 </script>
 
@@ -75,26 +84,17 @@ function handleUnitChange(event: Event) {
               type="text"
             />
 
-            <label
-              class="time-frequency-panel__select-wrap"
-              for="time-frequency-unit"
-            >
+            <div class="time-frequency-panel__select-wrap">
               <span class="time-frequency-panel__select-label">单位</span>
-              <select
+              <BaseSelect
                 id="time-frequency-unit"
                 class="glass-input time-frequency-panel__select"
-                :value="inputUnit"
-                @change="handleUnitChange"
-              >
-                <option
-                  v-for="option in unitOptions"
-                  :key="option.unit"
-                  :value="option.unit"
-                >
-                  {{ option.label }} ({{ option.unit }})
-                </option>
-              </select>
-            </label>
+                label="时间频率单位"
+                :model-value="inputUnit"
+                :options="unitSelectOptions"
+                @update:model-value="handleUnitChange"
+              />
+            </div>
           </div>
         </div>
 

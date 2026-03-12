@@ -47,7 +47,7 @@ const readyCount = computed(
           <strong>{{ tools.length }}</strong>
         </div>
         <p class="hero-panel__note">
-          视觉基调采用浅色光晕科技感，强调留白、渐变和轻量玻璃质感。
+          新版界面转向暖白编辑台风格，强调中文阅读节奏、数字辨识度和长时间使用的舒适感。
         </p>
       </aside>
     </section>

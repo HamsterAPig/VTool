@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
+import BaseSelect from '@/components/BaseSelect.vue'
 import BrowserDataPanel from '@/components/BrowserDataPanel.vue'
 import WorkdayEntryDialog from '@/features/worktime-tool/WorkdayEntryDialog.vue'
 import WorktimeRulesPanel from '@/features/worktime-tool/WorktimeRulesPanel.vue'
@@ -71,6 +74,28 @@ const monthOptions = [
   '11月',
   '12月',
 ]
+
+const yearSelectOptions = computed(() =>
+  yearOptions.value.map((year) => ({
+    label: `${year}年`,
+    value: year,
+  })),
+)
+
+const monthSelectOptions = computed(() =>
+  monthOptions.map((month, index) => ({
+    label: month,
+    value: index,
+  })),
+)
+
+function updateVisibleYear(value: string | number) {
+  visibleYear.value = Number(value)
+}
+
+function updateVisibleMonth(value: string | number) {
+  visibleMonthIndex.value = Number(value)
+}
 </script>
 
 <template>
@@ -83,20 +108,28 @@ const monthOptions = [
 
     <section class="worktime-overview">
       <article class="surface-panel worktime-summary-card">
+        <span class="worktime-summary-card__eyebrow">Month Ledger</span>
         <span class="worktime-summary-card__label">当前月份</span>
         <strong>{{ visibleMonthLabel }}</strong>
+        <p>按月查看记录和规则汇总。</p>
       </article>
       <article class="surface-panel worktime-summary-card">
+        <span class="worktime-summary-card__eyebrow">Recorded Days</span>
         <span class="worktime-summary-card__label">记录天数</span>
         <strong>{{ monthSummary.recordedDays }}</strong>
+        <p>只统计已经写入上下班时间的日期。</p>
       </article>
       <article class="surface-panel worktime-summary-card">
+        <span class="worktime-summary-card__eyebrow">Worked Time</span>
         <span class="worktime-summary-card__label">累计工时</span>
         <strong>{{ monthSummary.totalLabel }}</strong>
+        <p>根据规则自动扣除不计薪时段。</p>
       </article>
       <article class="surface-panel worktime-summary-card">
+        <span class="worktime-summary-card__eyebrow">Monthly Balance</span>
         <span class="worktime-summary-card__label">月结论</span>
         <strong>{{ monthSummary.balanceLabel }}</strong>
+        <p>正负差值会同步反映到月历状态。</p>
       </article>
     </section>
 
@@ -158,23 +191,23 @@ const monthOptions = [
         <div class="worktime-board__toolbar-center">
           <label class="worktime-board__picker">
             <span>年份</span>
-            <select v-model.number="visibleYear" class="glass-input">
-              <option v-for="year in yearOptions" :key="year" :value="year">
-                {{ year }}年
-              </option>
-            </select>
+            <BaseSelect
+              class="worktime-board__select"
+              label="可见年份"
+              :model-value="visibleYear"
+              :options="yearSelectOptions"
+              @update:model-value="updateVisibleYear"
+            />
           </label>
           <label class="worktime-board__picker">
             <span>月份</span>
-            <select v-model.number="visibleMonthIndex" class="glass-input">
-              <option
-                v-for="(month, index) in monthOptions"
-                :key="month"
-                :value="index"
-              >
-                {{ month }}
-              </option>
-            </select>
+            <BaseSelect
+              class="worktime-board__select"
+              label="可见月份"
+              :model-value="visibleMonthIndex"
+              :options="monthSelectOptions"
+              @update:model-value="updateVisibleMonth"
+            />
           </label>
         </div>
 
