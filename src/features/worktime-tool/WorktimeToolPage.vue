@@ -3,6 +3,8 @@ import { computed } from 'vue'
 
 import BaseSelect from '@/components/BaseSelect.vue'
 import BrowserDataPanel from '@/components/BrowserDataPanel.vue'
+import ShortcutScope from '@/components/ShortcutScope.vue'
+import type { ShortcutBinding } from '@/components/shortcutScope'
 import WorkdayEntryDialog from '@/features/worktime-tool/WorkdayEntryDialog.vue'
 import WorktimeRulesPanel from '@/features/worktime-tool/WorktimeRulesPanel.vue'
 import { useWorktimeCalendar } from '@/features/worktime-tool/useWorktimeCalendar'
@@ -16,7 +18,6 @@ const {
   addOverrideRule,
   calendarDays,
   canCopyPrevious,
-  closeEditor,
   copyPreviousDay,
   defaultTargetMinutes,
   deleteEditorRecord,
@@ -30,11 +31,13 @@ const {
   isDialogOpen,
   jumpToToday,
   monthSummary,
+  moveSelection,
   moveMonth,
   openEditor,
   overrideDateInput,
   overrideDates,
   removeActiveOverrideRule,
+  requestCloseEditor,
   removeDraftSegment,
   ruleDraft,
   ruleEditorError,
@@ -89,6 +92,41 @@ const monthSelectOptions = computed(() =>
   })),
 )
 
+const calendarShortcutBindings = computed<ShortcutBinding[]>(() => [
+  {
+    handler: () => moveSelection(-1),
+    keys: 'left',
+  },
+  {
+    handler: () => moveSelection(1),
+    keys: 'right',
+  },
+  {
+    handler: () => moveSelection(-7),
+    keys: 'up',
+  },
+  {
+    handler: () => moveSelection(7),
+    keys: 'down',
+  },
+  {
+    handler: () => openEditor(),
+    keys: 'enter',
+  },
+  {
+    handler: () => jumpToToday(),
+    keys: 't',
+  },
+  {
+    handler: () => moveMonth(-1),
+    keys: '[',
+  },
+  {
+    handler: () => moveMonth(1),
+    keys: ']',
+  },
+])
+
 function updateVisibleYear(value: string | number) {
   visibleYear.value = Number(value)
 }
@@ -99,7 +137,12 @@ function updateVisibleMonth(value: string | number) {
 </script>
 
 <template>
-  <div class="tool-page worktime-page">
+  <ShortcutScope
+    as="div"
+    :active="!isDialogOpen"
+    :bindings="calendarShortcutBindings"
+    class="tool-page worktime-page"
+  >
     <section class="tool-hero worktime-hero">
       <span class="hero-badge">Worktime Rule Engine</span>
       <h1>工时日历</h1>
@@ -278,7 +321,7 @@ function updateVisibleMonth(value: string | number) {
       :is-open="isDialogOpen"
       :start-time="draftStartTime"
       :summary="editorSummary"
-      @close="closeEditor"
+      @request-close="requestCloseEditor"
       @copy-previous="copyPreviousDay"
       @delete="deleteEditorRecord"
       @save="saveEditor"
@@ -287,5 +330,5 @@ function updateVisibleMonth(value: string | number) {
       @update:end-time="draftEndTime = $event"
       @update:start-time="draftStartTime = $event"
     />
-  </div>
+  </ShortcutScope>
 </template>

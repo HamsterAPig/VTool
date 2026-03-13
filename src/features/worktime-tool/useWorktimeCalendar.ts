@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import {
   WEEKDAY_KEYS,
@@ -90,14 +90,6 @@ function moveToMonth(date: Date, year: number, month: number): Date {
   const day = Math.min(date.getDate(), getDaysInMonth(year, month))
 
   return new Date(year, month, day)
-}
-
-function isTypingTarget(target: EventTarget | null): boolean {
-  if (!(target instanceof HTMLElement)) {
-    return false
-  }
-
-  return ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName)
 }
 
 function downloadJson(raw: string, filename: string) {
@@ -272,6 +264,9 @@ export function useWorktimeCalendar() {
   const editorResolvedRule = computed(() =>
     resolveRuleForDate(editorDateKey.value, payload.value.rules),
   )
+  const editorRecord = computed(
+    () => payload.value.records[editorDateKey.value] ?? null,
+  )
   const editorSummary = computed(() =>
     calculateWorktime(
       {
@@ -280,6 +275,11 @@ export function useWorktimeCalendar() {
       },
       editorResolvedRule.value,
     ),
+  )
+  const isEditorDirty = computed(
+    () =>
+      (editorRecord.value?.startTime ?? '') !== draftStartTime.value ||
+      (editorRecord.value?.endTime ?? '') !== draftEndTime.value,
   )
   const canCopyPrevious = computed(() => {
     const previousDateKey = formatDateKey(
@@ -405,6 +405,20 @@ export function useWorktimeCalendar() {
   function closeEditor() {
     isDialogOpen.value = false
     editorError.value = ''
+  }
+
+  function requestCloseEditor() {
+    if (!isEditorDirty.value) {
+      closeEditor()
+      return true
+    }
+
+    if (!saveEditor()) {
+      return false
+    }
+
+    closeEditor()
+    return true
   }
 
   function saveEditor(): boolean {
@@ -663,103 +677,6 @@ export function useWorktimeCalendar() {
     ruleEditorStatus.value = `已删除 ${removedDate} 的例外规则。`
   }
 
-  function handleDialogShortcut(event: KeyboardEvent): boolean {
-    if (event.key === 'Escape') {
-      event.preventDefault()
-      closeEditor()
-      return true
-    }
-
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
-      event.preventDefault()
-      saveEditor()
-      return true
-    }
-
-    if (event.altKey && event.key === 'ArrowRight') {
-      event.preventDefault()
-      saveAndMove(1)
-      return true
-    }
-
-    if (event.altKey && event.key === 'ArrowLeft') {
-      event.preventDefault()
-      saveAndMove(-1)
-      return true
-    }
-
-    return false
-  }
-
-  function handleCalendarShortcut(event: KeyboardEvent) {
-    if (isTypingTarget(event.target)) {
-      return
-    }
-
-    if (event.key === 'ArrowLeft') {
-      event.preventDefault()
-      moveSelection(-1)
-      return
-    }
-
-    if (event.key === 'ArrowRight') {
-      event.preventDefault()
-      moveSelection(1)
-      return
-    }
-
-    if (event.key === 'ArrowUp') {
-      event.preventDefault()
-      moveSelection(-7)
-      return
-    }
-
-    if (event.key === 'ArrowDown') {
-      event.preventDefault()
-      moveSelection(7)
-      return
-    }
-
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      openEditor()
-      return
-    }
-
-    if (event.key.toLowerCase() === 't') {
-      event.preventDefault()
-      jumpToToday()
-      return
-    }
-
-    if (event.key === '[') {
-      event.preventDefault()
-      moveMonth(-1)
-      return
-    }
-
-    if (event.key === ']') {
-      event.preventDefault()
-      moveMonth(1)
-    }
-  }
-
-  function onWindowKeydown(event: KeyboardEvent) {
-    if (isDialogOpen.value && handleDialogShortcut(event)) {
-      return
-    }
-
-    handleCalendarShortcut(event)
-  }
-
-  onMounted(() => {
-    window.addEventListener('keydown', onWindowKeydown)
-  })
-
-  onBeforeUnmount(() => {
-    window.removeEventListener('keydown', onWindowKeydown)
-  })
-
   return {
     activeOverrideDate,
     activeRuleLabel,
@@ -778,13 +695,17 @@ export function useWorktimeCalendar() {
     editorSummary,
     exportRecords,
     importFromFile,
+    isEditorDirty,
     isDialogOpen,
+    jumpToToday,
     monthSummary,
+    moveSelection,
     moveMonth,
     openEditor,
     overrideDateInput,
     overrideDates,
     removeActiveOverrideRule,
+    requestCloseEditor,
     ruleDraft,
     ruleEditorError,
     ruleEditorStatus,
@@ -810,7 +731,6 @@ export function useWorktimeCalendar() {
     weekLabels,
     weekdayItems,
     yearOptions,
-    jumpToToday,
     addDraftSegment,
     addOverrideRule,
     removeDraftSegment,

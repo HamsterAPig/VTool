@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+
+import ShortcutScope from '@/components/ShortcutScope.vue'
+import type { ShortcutBinding } from '@/components/shortcutScope'
 import type {
   ResolvedWorktimeRule,
   WorktimeDaySummary,
@@ -16,7 +20,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  close: []
+  requestClose: []
   copyPrevious: []
   delete: []
   save: []
@@ -26,23 +30,101 @@ const emit = defineEmits<{
   'update:startTime': [value: string]
 }>()
 
+const panelRef = ref<HTMLElement | null>(null)
+const startInputRef = ref<HTMLInputElement | null>(null)
+const endInputRef = ref<HTMLInputElement | null>(null)
+
+const timeInputs = computed(() =>
+  [startInputRef.value, endInputRef.value].filter(
+    (input): input is HTMLInputElement => Boolean(input),
+  ),
+)
+
+const dialogBindings = computed<ShortcutBinding[]>(() => [
+  {
+    allowInInput: true,
+    handler: () => emit('requestClose'),
+    keys: 'esc',
+  },
+  {
+    allowInInput: true,
+    handler: () => emit('save'),
+    keys: ['ctrl+s', 'command+s'],
+  },
+  {
+    allowInInput: true,
+    handler: () => emit('savePrevious'),
+    keys: 'left',
+  },
+  {
+    allowInInput: true,
+    handler: () => emit('saveNext'),
+    keys: 'right',
+  },
+  {
+    allowInInput: true,
+    handler: (event) => focusTimeInput(1, event.target),
+    keys: 'tab',
+  },
+  {
+    allowInInput: true,
+    handler: (event) => focusTimeInput(-1, event.target),
+    keys: 'shift+tab',
+  },
+])
+
+function focusTimeInput(direction: 1 | -1, sourceTarget?: EventTarget | null) {
+  const inputs = timeInputs.value
+
+  if (inputs.length === 0) {
+    return
+  }
+
+  const currentTarget =
+    sourceTarget instanceof HTMLElement ? sourceTarget : document.activeElement
+  const activeIndex = inputs.findIndex((input) => input === currentTarget)
+
+  if (activeIndex < 0) {
+    ;(direction === 1 ? inputs[0] : inputs[inputs.length - 1])?.focus()
+    return
+  }
+
+  const nextIndex = (activeIndex + direction + inputs.length) % inputs.length
+
+  inputs[nextIndex]?.focus()
+}
+
+function getInitialFocus() {
+  return startInputRef.value
+}
+
+function getFallbackFocus() {
+  return panelRef.value
+}
+
 function onOverlayClick(event: MouseEvent) {
   if (event.target === event.currentTarget) {
-    emit('close')
+    emit('requestClose')
   }
 }
 </script>
 
 <template>
   <Teleport to="body">
-    <div
+    <ShortcutScope
       v-if="props.isOpen"
+      as="div"
+      :active="props.isOpen"
+      :bindings="dialogBindings"
+      :fallback-focus="getFallbackFocus"
+      :initial-focus="getInitialFocus"
+      :trap-focus="props.isOpen"
       class="workday-dialog"
       role="dialog"
       aria-modal="true"
       @click="onOverlayClick"
     >
-      <div class="workday-dialog__panel">
+      <div ref="panelRef" class="workday-dialog__panel" tabindex="-1">
         <div class="workday-dialog__header">
           <div>
             <span class="workday-dialog__eyebrow">Day Entry</span>
@@ -61,8 +143,9 @@ function onOverlayClick(event: MouseEvent) {
           <button
             aria-label="关闭弹窗"
             class="workday-dialog__close"
+            tabindex="-1"
             type="button"
-            @click="emit('close')"
+            @click="emit('requestClose')"
           >
             ×
           </button>
@@ -72,6 +155,7 @@ function onOverlayClick(event: MouseEvent) {
           <label class="field-group">
             <span class="field-label">上班时间</span>
             <input
+              ref="startInputRef"
               :value="props.startTime"
               class="glass-input workday-dialog__time-input"
               type="time"
@@ -87,6 +171,7 @@ function onOverlayClick(event: MouseEvent) {
           <label class="field-group">
             <span class="field-label">下班时间</span>
             <input
+              ref="endInputRef"
               :value="props.endTime"
               class="glass-input workday-dialog__time-input"
               type="time"
@@ -123,6 +208,7 @@ function onOverlayClick(event: MouseEvent) {
           <button
             v-if="props.canCopyPrevious"
             class="button button--ghost"
+            tabindex="-1"
             type="button"
             @click="emit('copyPrevious')"
           >
@@ -130,6 +216,7 @@ function onOverlayClick(event: MouseEvent) {
           </button>
           <button
             class="button button--ghost"
+            tabindex="-1"
             type="button"
             @click="emit('delete')"
           >
@@ -137,6 +224,7 @@ function onOverlayClick(event: MouseEvent) {
           </button>
           <button
             class="button button--ghost"
+            tabindex="-1"
             type="button"
             @click="emit('savePrevious')"
           >
@@ -144,6 +232,7 @@ function onOverlayClick(event: MouseEvent) {
           </button>
           <button
             class="button button--ghost"
+            tabindex="-1"
             type="button"
             @click="emit('saveNext')"
           >
@@ -151,6 +240,7 @@ function onOverlayClick(event: MouseEvent) {
           </button>
           <button
             class="button button--primary"
+            tabindex="-1"
             type="button"
             @click="emit('save')"
           >
@@ -159,9 +249,10 @@ function onOverlayClick(event: MouseEvent) {
         </div>
 
         <p class="workday-dialog__hint">
-          Esc 关闭，Ctrl/Cmd + S 保存，Alt + ← / → 保存并切换日期。
+          Esc 关闭并自动保存，Ctrl/Cmd + S 保存，← / → 保存并切换日期，Tab
+          仅在时间输入框间切换。
         </p>
       </div>
-    </div>
+    </ShortcutScope>
   </Teleport>
 </template>
