@@ -27,6 +27,7 @@ const {
   editorResolvedRule,
   editorSummary,
   exportRecords,
+  importFromClipboard,
   importFromFile,
   isDialogOpen,
   jumpToToday,
@@ -182,6 +183,7 @@ function updateVisibleMonth(value: string | number) {
       :status="storageStatus"
       title="浏览器数据"
       @export="exportRecords"
+      @import-clipboard="importFromClipboard"
       @import-file="importFromFile"
     />
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const emit = defineEmits<{
   export: []
+  'import-clipboard': []
   'import-file': [file: File]
 }>()
 
@@ -10,12 +11,14 @@ const props = withDefaults(
     description: string
     status?: string
     exportDisabled?: boolean
+    clipboardImportLabel?: string
     importLabel?: string
     exportLabel?: string
   }>(),
   {
     status: '',
     exportDisabled: false,
+    clipboardImportLabel: '从剪贴板导入',
     importLabel: '导入 JSON',
     exportLabel: '导出 JSON',
   },
@@ -45,6 +48,13 @@ function onFileChange(event: Event) {
     </div>
 
     <div class="browser-data-panel__actions">
+      <button
+        class="button button--ghost"
+        type="button"
+        @click="emit('import-clipboard')"
+      >
+        {{ props.clipboardImportLabel }}
+      </button>
       <label class="button button--ghost browser-data-panel__import">
         {{ props.importLabel }}
         <input

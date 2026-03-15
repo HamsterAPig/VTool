@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ShortcutBinding } from '@/components/shortcutScope'
+import { createDefaultWorktimeRuleSet } from '@/features/worktime-tool/worktime'
 
 const hotkeysMockState = vi.hoisted(() => ({
   bindings: [] as Array<{
@@ -83,6 +84,19 @@ vi.mock('focus-trap', () => ({
 
 import WorktimeToolPage from '@/features/worktime-tool/WorktimeToolPage.vue'
 
+const clipboardMockState = {
+  readText: vi.fn<() => Promise<string>>(),
+  writeText: vi.fn<() => Promise<void>>(),
+}
+
+function formatDateKey(date: Date) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+
+  return `${year}-${month}-${day}`
+}
+
 function triggerHotkey(keys: string, target: EventTarget = document.body) {
   const binding = hotkeysMockState.bindings.find((entry) => entry.keys === keys)
 
@@ -108,9 +122,15 @@ describe('WorktimeToolPage', () => {
     hotkeysMockState.bindings = []
     focusTrapMockState.traps = []
     focusTrapMockState.createFocusTrap.mockClear()
+    clipboardMockState.readText.mockReset().mockResolvedValue('')
+    clipboardMockState.writeText.mockReset().mockResolvedValue(undefined)
     window.localStorage.clear()
     URL.createObjectURL = vi.fn(() => 'blob:mock')
     URL.revokeObjectURL = vi.fn()
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: clipboardMockState,
+    })
   })
 
   it('renders a Sunday-first calendar and saves a workday record', async () => {
@@ -294,5 +314,93 @@ describe('WorktimeToolPage', () => {
     )
 
     expect(wrapper.text()).toContain('请同时填写上班和下班时间。')
+  })
+
+  it('imports worktime data from the clipboard', async () => {
+    const today = new Date()
+    const dateKey = formatDateKey(today)
+
+    clipboardMockState.readText.mockResolvedValue(
+      JSON.stringify({
+        version: 2,
+        data: {
+          records: {
+            [dateKey]: {
+              date: dateKey,
+              startTime: '08:30',
+              endTime: '17:30',
+              updatedAt: '2026-03-16T09:00:00.000Z',
+            },
+          },
+          rules: createDefaultWorktimeRuleSet(),
+        },
+      }),
+    )
+
+    const wrapper = mount(WorktimeToolPage, {
+      attachTo: document.body,
+      global: {
+        stubs: {
+          teleport: true,
+        },
+      },
+    })
+
+    await wrapper
+      .get('.browser-data-panel__actions button.button--ghost')
+      .trigger('click')
+
+    await vi.waitFor(() =>
+      expect(clipboardMockState.readText).toHaveBeenCalledTimes(1),
+    )
+
+    expect(window.localStorage.getItem('vtool.worktime.data')).toContain(
+      dateKey,
+    )
+    expect(wrapper.text()).toContain('已导入 1 条记录和规则配置。')
+    expect(wrapper.text()).toContain('记录天数1')
+  })
+
+  it('shows a status message when the clipboard is empty', async () => {
+    clipboardMockState.readText.mockResolvedValue('   ')
+
+    const wrapper = mount(WorktimeToolPage, {
+      attachTo: document.body,
+      global: {
+        stubs: {
+          teleport: true,
+        },
+      },
+    })
+
+    await wrapper
+      .get('.browser-data-panel__actions button.button--ghost')
+      .trigger('click')
+
+    await vi.waitFor(() =>
+      expect(wrapper.text()).toContain('剪贴板没有可导入的内容。'),
+    )
+  })
+
+  it('shows a status message when clipboard import is unavailable', async () => {
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: undefined,
+    })
+
+    const wrapper = mount(WorktimeToolPage, {
+      attachTo: document.body,
+      global: {
+        stubs: {
+          teleport: true,
+        },
+      },
+    })
+
+    await wrapper
+      .get('.browser-data-panel__actions button.button--ghost')
+      .trigger('click')
+
+    expect(wrapper.text()).toContain('当前环境不支持从剪贴板导入。')
   })
 })

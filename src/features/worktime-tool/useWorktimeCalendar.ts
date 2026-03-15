@@ -525,17 +525,44 @@ export function useWorktimeCalendar() {
     storageStatus.value = '已导出工时记录和规则配置。'
   }
 
+  function importFromRaw(raw: string) {
+    const importedPayload = importWorktimeData(raw)
+
+    persistPayload(importedPayload)
+    refreshRuleDraft()
+    storageStatus.value = `已导入 ${Object.keys(importedPayload.records).length} 条记录和规则配置。`
+  }
+
   async function importFromFile(file: File) {
     try {
       const raw = await file.text()
-      const importedPayload = importWorktimeData(raw)
-
-      persistPayload(importedPayload)
-      refreshRuleDraft()
-      storageStatus.value = `已导入 ${Object.keys(importedPayload.records).length} 条记录和规则配置。`
+      importFromRaw(raw)
     } catch (error) {
       storageStatus.value =
         error instanceof Error ? error.message : '导入失败，请检查文件内容。'
+    }
+  }
+
+  async function importFromClipboard() {
+    if (!navigator.clipboard?.readText) {
+      storageStatus.value = '当前环境不支持从剪贴板导入。'
+      return
+    }
+
+    try {
+      const raw = await navigator.clipboard.readText()
+
+      if (!raw.trim()) {
+        storageStatus.value = '剪贴板没有可导入的内容。'
+        return
+      }
+
+      importFromRaw(raw)
+    } catch (error) {
+      storageStatus.value =
+        error instanceof Error
+          ? `读取剪贴板失败：${error.message}`
+          : '读取剪贴板失败，请检查浏览器权限。'
     }
   }
 
@@ -694,6 +721,7 @@ export function useWorktimeCalendar() {
     editorResolvedRule,
     editorSummary,
     exportRecords,
+    importFromClipboard,
     importFromFile,
     isEditorDirty,
     isDialogOpen,
