@@ -111,7 +111,7 @@ onMounted(() => {
           <div>
             <p class="footer-board__title">VTool</p>
             <p class="footer-board__text">
-              重做后的工作台把输入、结果、复制和快捷键放回同一任务流里。
+              静态托管的使用Vue编写的工具页面
             </p>
           </div>
 
