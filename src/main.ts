@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 
 import '@fontsource-variable/manrope/wght.css'
 import '@fontsource-variable/outfit/wght.css'
+import 'uno.css'
 
 import App from '@/app/App.vue'
 import { router, updateDocumentTitle } from '@/router'
@@ -10,7 +11,7 @@ import {
   applyThemeToDocument,
   loadThemePreference,
 } from '@/stores/themePreference'
-import '@/styles/main.css'
+import '@/styles/main.scss'
 
 applyThemeToDocument(loadThemePreference())
 

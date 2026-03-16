@@ -1,0 +1,243 @@
+@font-face {
+  font-family: 'Noto Sans SC';
+  src: url('@fontsource/noto-sans-sc/files/noto-sans-sc-chinese-simplified-400-normal.woff2')
+    format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Sans SC';
+  src: url('@fontsource/noto-sans-sc/files/noto-sans-sc-chinese-simplified-700-normal.woff2')
+    format('woff2');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Serif SC';
+  src: url('@fontsource/noto-serif-sc/files/noto-serif-sc-chinese-simplified-700-normal.woff2')
+    format('woff2');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+
+  --font-text:
+    'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    sans-serif;
+  --font-display:
+    'Noto Serif SC', 'Songti SC', 'STSong', 'Source Han Serif SC', serif;
+  --font-number:
+    'Manrope Variable', 'Noto Sans SC', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  --font-ui: 'Outfit Variable', 'Manrope Variable', 'Noto Sans SC', sans-serif;
+
+  --radius-pill: 999px;
+  --radius-card: 26px;
+  --radius-panel: 34px;
+  --radius-soft: 20px;
+  --shell-width: 1380px;
+  --page-padding: clamp(1rem, 2.1vw, 1.7rem);
+
+  --page-gradient:
+    radial-gradient(
+      circle at 18% 18%,
+      rgba(133, 199, 255, 0.24),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 82% 14%,
+      rgba(103, 220, 224, 0.18),
+      transparent 20%
+    ),
+    linear-gradient(180deg, #f7fbff 0%, #edf5ff 52%, #e5eefb 100%);
+  --page-glow-1: rgba(101, 180, 255, 0.2);
+  --page-glow-2: rgba(81, 173, 189, 0.16);
+  --page-glow-3: rgba(255, 219, 202, 0.18);
+  --surface-1: rgba(255, 255, 255, 0.84);
+  --surface-2: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.94),
+    rgba(245, 250, 255, 0.9)
+  );
+  --surface-3: rgba(245, 249, 255, 0.84);
+  --surface-chip: rgba(255, 255, 255, 0.68);
+  --surface-strong: rgba(255, 255, 255, 0.96);
+  --line-soft: rgba(80, 108, 138, 0.12);
+  --line-strong: rgba(80, 108, 138, 0.2);
+  --text-primary: #112032;
+  --text-muted: #61718a;
+  --text-subtle: #7a8aa2;
+  --accent: #2d6ca1;
+  --accent-strong: #174d7a;
+  --accent-soft: rgba(45, 108, 161, 0.12);
+  --accent-band: linear-gradient(90deg, #184b77, #4a96c4, #7aa8df);
+  --success: #2f7c66;
+  --success-soft: rgba(47, 124, 102, 0.12);
+  --danger: #ba5c6d;
+  --danger-soft: rgba(186, 92, 109, 0.12);
+  --warning: #b7803e;
+  --warning-soft: rgba(183, 128, 62, 0.12);
+  --shadow-soft: 0 24px 70px rgba(85, 111, 149, 0.14);
+  --shadow-strong: 0 24px 84px rgba(85, 111, 149, 0.2);
+  --shadow-float: 0 32px 100px rgba(82, 109, 150, 0.26);
+  --focus-ring: 0 0 0 3px rgba(74, 150, 196, 0.22);
+  --button-primary-text: #f7fbff;
+  --button-primary-bg: linear-gradient(135deg, #184b77, #4a96c4);
+  --button-ghost-bg: rgba(255, 255, 255, 0.72);
+  --button-ghost-hover: rgba(255, 255, 255, 0.92);
+  --dialog-backdrop: rgba(17, 24, 39, 0.34);
+}
+
+:root,
+:root[data-theme='aurora-mist'] {
+  --page-gradient:
+    radial-gradient(
+      circle at 12% 12%,
+      rgba(156, 209, 255, 0.3),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 84% 14%,
+      rgba(116, 212, 221, 0.2),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 86% 82%,
+      rgba(248, 205, 188, 0.16),
+      transparent 28%
+    ),
+    linear-gradient(180deg, #f7fbff 0%, #edf5ff 52%, #e4eefb 100%);
+  --page-glow-1: rgba(104, 183, 255, 0.22);
+  --page-glow-2: rgba(92, 176, 193, 0.16);
+  --page-glow-3: rgba(255, 214, 192, 0.16);
+  --surface-1: rgba(255, 255, 255, 0.84);
+  --surface-2: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(243, 249, 255, 0.92)
+  );
+  --surface-3: rgba(239, 247, 255, 0.88);
+  --surface-chip: rgba(255, 255, 255, 0.74);
+  --surface-strong: rgba(255, 255, 255, 0.97);
+  --line-soft: rgba(78, 108, 142, 0.12);
+  --line-strong: rgba(78, 108, 142, 0.2);
+  --text-primary: #112032;
+  --text-muted: #60728b;
+  --text-subtle: #7d8ca2;
+  --accent: #2d6ca1;
+  --accent-strong: #184b77;
+  --accent-soft: rgba(45, 108, 161, 0.12);
+  --accent-band: linear-gradient(90deg, #184b77, #4a96c4, #73a6df);
+  --shadow-soft: 0 24px 70px rgba(85, 111, 149, 0.14);
+  --shadow-strong: 0 24px 84px rgba(85, 111, 149, 0.2);
+  --shadow-float: 0 32px 100px rgba(82, 109, 150, 0.26);
+  --button-primary-bg: linear-gradient(135deg, #184b77, #4a96c4);
+}
+
+:root[data-theme='jade-atelier'] {
+  --page-gradient:
+    radial-gradient(
+      circle at 14% 14%,
+      rgba(166, 205, 181, 0.26),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 86% 12%,
+      rgba(222, 237, 218, 0.52),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 84% 84%,
+      rgba(208, 218, 198, 0.24),
+      transparent 28%
+    ),
+    linear-gradient(180deg, #fbfdf8 0%, #f3f7f1 54%, #edf2ea 100%);
+  --page-glow-1: rgba(136, 181, 153, 0.18);
+  --page-glow-2: rgba(178, 204, 186, 0.24);
+  --page-glow-3: rgba(218, 227, 209, 0.18);
+  --surface-1: rgba(255, 255, 252, 0.8);
+  --surface-2: linear-gradient(
+    180deg,
+    rgba(255, 255, 252, 0.94),
+    rgba(244, 248, 240, 0.92)
+  );
+  --surface-3: rgba(242, 247, 238, 0.88);
+  --surface-chip: rgba(255, 255, 251, 0.72);
+  --surface-strong: rgba(252, 253, 249, 0.97);
+  --line-soft: rgba(88, 116, 95, 0.12);
+  --line-strong: rgba(88, 116, 95, 0.2);
+  --text-primary: #18261d;
+  --text-muted: #647164;
+  --text-subtle: #7d8a7e;
+  --accent: #4c7a60;
+  --accent-strong: #335542;
+  --accent-soft: rgba(76, 122, 96, 0.12);
+  --accent-band: linear-gradient(90deg, #335542, #6d9576, #9cb59e);
+  --success: #2d7655;
+  --success-soft: rgba(45, 118, 85, 0.12);
+  --danger: #aa6670;
+  --danger-soft: rgba(170, 102, 112, 0.12);
+  --warning: #a0864e;
+  --warning-soft: rgba(160, 134, 78, 0.12);
+  --shadow-soft: 0 24px 70px rgba(91, 113, 96, 0.12);
+  --shadow-strong: 0 24px 84px rgba(91, 113, 96, 0.18);
+  --shadow-float: 0 32px 100px rgba(91, 113, 96, 0.22);
+  --button-primary-bg: linear-gradient(135deg, #355542, #7fa286);
+}
+
+:root[data-theme='rose-lab'] {
+  --page-gradient:
+    radial-gradient(
+      circle at 12% 12%,
+      rgba(255, 201, 215, 0.26),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 86% 14%,
+      rgba(255, 222, 210, 0.34),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 82% 84%,
+      rgba(220, 208, 240, 0.22),
+      transparent 28%
+    ),
+    linear-gradient(180deg, #fff9f8 0%, #fff3f2 54%, #f8ecec 100%);
+  --page-glow-1: rgba(255, 194, 207, 0.18);
+  --page-glow-2: rgba(255, 214, 198, 0.18);
+  --page-glow-3: rgba(220, 208, 240, 0.16);
+  --surface-1: rgba(255, 255, 255, 0.82);
+  --surface-2: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.94),
+    rgba(255, 246, 244, 0.92)
+  );
+  --surface-3: rgba(255, 243, 241, 0.88);
+  --surface-chip: rgba(255, 255, 255, 0.72);
+  --surface-strong: rgba(255, 252, 251, 0.97);
+  --line-soft: rgba(134, 101, 111, 0.12);
+  --line-strong: rgba(134, 101, 111, 0.2);
+  --text-primary: #27181f;
+  --text-muted: #7c6570;
+  --text-subtle: #967f88;
+  --accent: #b56f63;
+  --accent-strong: #8c4f63;
+  --accent-soft: rgba(181, 111, 99, 0.12);
+  --accent-band: linear-gradient(90deg, #8c4f63, #d3897a, #b496ca);
+  --success: #2e7860;
+  --success-soft: rgba(46, 120, 96, 0.12);
+  --danger: #c15a6c;
+  --danger-soft: rgba(193, 90, 108, 0.12);
+  --warning: #be8752;
+  --warning-soft: rgba(190, 135, 82, 0.12);
+  --shadow-soft: 0 24px 70px rgba(149, 108, 120, 0.14);
+  --shadow-strong: 0 24px 84px rgba(149, 108, 120, 0.2);
+  --shadow-float: 0 32px 100px rgba(149, 108, 120, 0.24);
+  --button-primary-bg: linear-gradient(135deg, #8c4f63, #d3897a);
+}

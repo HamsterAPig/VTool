@@ -1,0 +1,233 @@
+:root,
+[data-theme='aurora-mist'] {
+  .shell-topbar {
+    grid-template-columns: minmax(240px, 1fr) minmax(0, 1.25fr) minmax(
+        260px,
+        auto
+      );
+  }
+
+  .shell-routebar {
+    grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  }
+
+  .home-hero {
+    grid-template-columns: minmax(0, 1.18fr) minmax(330px, 0.82fr);
+  }
+
+  .commit-workbench {
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr) 290px;
+    align-items: start;
+  }
+
+  .tool-layout {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr) 280px;
+    align-items: start;
+  }
+
+  .worktime-shell {
+    grid-template-columns: 340px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .home-feature-card,
+  .tool-card,
+  .shortcut-legend {
+    backdrop-filter: blur(14px);
+  }
+}
+
+[data-theme='jade-atelier'] {
+  .shell-topbar {
+    grid-template-columns: 260px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .top-nav {
+    justify-content: flex-start;
+  }
+
+  .theme-switcher {
+    grid-column: 1 / -1;
+    max-width: 420px;
+  }
+
+  .shell-routebar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shell-routebar__theme {
+    border-radius: 0;
+    border: 0;
+    border-top: 1px solid var(--line-soft);
+    padding: 1rem 0 0;
+    background: transparent;
+  }
+
+  .home-hero {
+    grid-template-columns: 1fr;
+    padding-inline: clamp(1.4rem, 3vw, 2.4rem);
+  }
+
+  .home-hero__stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .home-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-feature-card,
+  .tool-card,
+  .shortcut-legend,
+  .browser-data-panel,
+  .worktime-rules,
+  .worktime-board {
+    border-radius: 18px;
+  }
+
+  .commit-workbench {
+    grid-template-columns: 320px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .commit-builder {
+    position: sticky;
+    top: 1rem;
+  }
+
+  .commit-preview {
+    grid-column: 2;
+  }
+
+  .shortcut-legend {
+    grid-column: 1;
+  }
+
+  .commit-browser {
+    border-radius: 18px;
+  }
+
+  .tool-layout {
+    grid-template-columns: 310px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .tool-panel,
+  .shortcut-legend {
+    align-self: start;
+  }
+
+  .result-panel {
+    grid-column: 2;
+  }
+
+  .worktime-shell {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+  }
+
+  .worktime-shell__side {
+    order: 2;
+  }
+
+  .worktime-shell__main {
+    order: 1;
+  }
+
+  .worktime-calendar__day,
+  .git-commit-helper-result-card,
+  .git-commit-helper-emoji-card,
+  .time-frequency-main-result,
+  .time-frequency-group {
+    border-radius: 16px;
+  }
+}
+
+[data-theme='rose-lab'] {
+  .shell-topbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+  }
+
+  .top-nav {
+    grid-column: 1 / -1;
+    padding-top: 0.2rem;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .shell-routebar {
+    grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.3fr);
+  }
+
+  .shell-routebar__theme {
+    order: -1;
+  }
+
+  .home-hero {
+    grid-template-columns: 320px minmax(0, 1fr);
+  }
+
+  .home-hero__lead {
+    order: 2;
+  }
+
+  .home-hero__stats {
+    order: 1;
+    align-content: start;
+  }
+
+  .home-feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-feature-card,
+  .tool-card,
+  .commit-browser,
+  .result-panel,
+  .shortcut-legend,
+  .worktime-board {
+    border-radius: 30px;
+  }
+
+  .commit-workbench {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    align-items: start;
+  }
+
+  .commit-preview {
+    position: sticky;
+    top: 1rem;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .shortcut-legend {
+    grid-column: 1;
+  }
+
+  .tool-layout {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+  }
+
+  .result-panel {
+    position: sticky;
+    top: 1rem;
+  }
+
+  .worktime-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .worktime-shell__side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .worktime-shell__main {
+    order: -1;
+  }
+}

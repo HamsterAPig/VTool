@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+
+import ShortcutLegend from '@/components/ShortcutLegend.vue'
+import ShortcutScope from '@/components/ShortcutScope.vue'
+import type { ShortcutBinding } from '@/components/shortcutScope'
 import { useTimestampTool } from '@/features/timestamp-tool/useTimestampTool'
 
 const {
@@ -12,21 +17,85 @@ const {
   result,
   timestampInput,
 } = useTimestampTool()
+
+const timestampInputRef = ref<HTMLInputElement | null>(null)
+const datetimeInputRef = ref<HTMLInputElement | null>(null)
+
+const shortcutItems = [
+  {
+    description: '聚焦当前输入',
+    keys: '/',
+  },
+  {
+    description: '切到时间戳转日期',
+    keys: '1',
+  },
+  {
+    description: '切到日期转时间戳',
+    keys: '2',
+  },
+  {
+    description: '填入当前时间',
+    keys: 'N',
+  },
+  {
+    description: '清空输入',
+    keys: 'C',
+  },
+]
+
+const shortcutBindings = computed<ShortcutBinding[]>(() => [
+  {
+    handler: () =>
+      mode.value === 'timestamp-to-date'
+        ? timestampInputRef.value?.focus()
+        : datetimeInputRef.value?.focus(),
+    keys: '/',
+  },
+  {
+    handler: () => {
+      mode.value = 'timestamp-to-date'
+      timestampInputRef.value?.focus()
+    },
+    keys: '1',
+  },
+  {
+    handler: () => {
+      mode.value = 'date-to-timestamp'
+      datetimeInputRef.value?.focus()
+    },
+    keys: '2',
+  },
+  {
+    handler: () => fillNow(),
+    keys: 'n',
+  },
+  {
+    handler: () => clearInputs(),
+    keys: 'c',
+  },
+])
 </script>
 
 <template>
-  <div class="tool-page">
-    <section class="tool-hero">
-      <span class="hero-badge">Timestamp Utility</span>
-      <h1>时间戳转换</h1>
-      <p>
-        在秒、毫秒时间戳与本地日期时间之间快速互转。界面保持最小操作路径，
-        同时给出清晰的成功、空状态和错误反馈。
-      </p>
+  <ShortcutScope
+    as="div"
+    :active="true"
+    :bindings="shortcutBindings"
+    class="tool-page panel-stack"
+  >
+    <section class="surface-card-strong tool-hero">
+      <div class="tool-hero__copy">
+        <span class="section-kicker">Timestamp Conversion</span>
+        <h1>时间戳转换</h1>
+        <p>
+          秒、毫秒时间戳和本地日期时间之间的往返转换被压到一个紧凑面板中，输入后直接在结果区复制目标格式。
+        </p>
+      </div>
     </section>
 
-    <section class="tool-layout">
-      <article class="surface-panel tool-panel">
+    <section class="tool-layout timestamp-workbench">
+      <article class="surface-card tool-panel">
         <div class="segment">
           <button
             class="segment__item"
@@ -50,6 +119,7 @@ const {
           <label class="field-label" for="timestamp-input">输入时间戳</label>
           <input
             id="timestamp-input"
+            ref="timestampInputRef"
             v-model="timestampInput"
             class="glass-input"
             inputmode="numeric"
@@ -95,6 +165,7 @@ const {
           <label class="field-label" for="datetime-input">输入日期时间</label>
           <input
             id="datetime-input"
+            ref="datetimeInputRef"
             v-model="datetimeInput"
             class="glass-input"
             step="1"
@@ -116,9 +187,12 @@ const {
         </div>
       </article>
 
-      <article class="surface-panel result-panel">
+      <article class="surface-card-strong result-panel">
         <div class="result-panel__header">
-          <h2>转换结果</h2>
+          <div>
+            <span class="section-kicker">Result Copy</span>
+            <h2>转换结果</h2>
+          </div>
           <p v-if="copyFeedback" class="result-panel__feedback">
             {{ copyFeedback }}
           </p>
@@ -156,6 +230,12 @@ const {
           {{ result.message }}
         </p>
       </article>
+
+      <ShortcutLegend
+        eyebrow="Shortcut Map"
+        title="时间戳快捷键"
+        :items="shortcutItems"
+      />
     </section>
-  </div>
+  </ShortcutScope>
 </template>

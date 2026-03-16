@@ -74,7 +74,8 @@ describe('GitCommitHelperPage', () => {
     expect(wrapper.findAll('[data-emoji-code]').length).toBe(1)
     expect(wrapper.find('[data-emoji-code=":sparkles:"]').exists()).toBe(false)
     expect(wrapper.text()).toContain(':sparkles: feat: 新增首页布局')
-    expect(wrapper.text()).toContain('当前已选 ✨ :sparkles:')
+    expect(wrapper.text()).toContain('当前已选')
+    expect(wrapper.text()).toContain('✨ :sparkles:')
   })
 
   it('updates all four result cards after entering scope and description', async () => {

@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import BaseSelect from '@/components/BaseSelect.vue'
+import ShortcutLegend from '@/components/ShortcutLegend.vue'
+import ShortcutScope from '@/components/ShortcutScope.vue'
+import type { ShortcutBinding } from '@/components/shortcutScope'
 import type { SupportedUnit } from '@/features/time-frequency-tool/timeFrequency'
 import { useTimeFrequencyTool } from '@/features/time-frequency-tool/useTimeFrequencyTool'
 
@@ -21,6 +24,54 @@ const {
   unitOptions,
 } = useTimeFrequencyTool()
 
+const valueInputRef = ref<HTMLInputElement | null>(null)
+
+const shortcutItems = [
+  {
+    description: '聚焦输入框',
+    keys: '/',
+  },
+  {
+    description: '聚焦单位选择',
+    keys: 'U',
+  },
+  {
+    description: '切换时间/频率维度',
+    keys: 'X',
+  },
+  {
+    description: '填入示例',
+    keys: 'E',
+  },
+  {
+    description: '清空输入',
+    keys: 'C',
+  },
+]
+
+const shortcutBindings = computed<ShortcutBinding[]>(() => [
+  {
+    handler: () => valueInputRef.value?.focus(),
+    keys: '/',
+  },
+  {
+    handler: () => document.getElementById('time-frequency-unit')?.focus(),
+    keys: 'u',
+  },
+  {
+    handler: () => swapDimension(),
+    keys: 'x',
+  },
+  {
+    handler: () => fillExample(),
+    keys: 'e',
+  },
+  {
+    handler: () => clearInputs(),
+    keys: 'c',
+  },
+])
+
 const unitSelectOptions = computed(() =>
   unitOptions.value.map((option) => ({
     description: inputDimension.value === 'time' ? '时间单位' : '频率单位',
@@ -35,18 +86,24 @@ function handleUnitChange(value: string | number) {
 </script>
 
 <template>
-  <div class="tool-page">
-    <section class="tool-hero">
-      <span class="hero-badge">Time & Frequency Utility</span>
-      <h1>时间 / 频率换算</h1>
-      <p>
-        支持时间单位内部换算、频率单位内部换算，以及时间与频率之间的倒数互转。
-        允许输入浮点数和科学计数法，并自动挑选更适合阅读的结果单位。
-      </p>
+  <ShortcutScope
+    as="div"
+    :active="true"
+    :bindings="shortcutBindings"
+    class="tool-page panel-stack"
+  >
+    <section class="surface-card-strong tool-hero">
+      <div class="tool-hero__copy">
+        <span class="section-kicker">Reciprocal Conversion</span>
+        <h1>时间 / 频率换算</h1>
+        <p>
+          输入、主结果、同维度结果和倒数互转结果被压缩到一个连续工作台里，避免在说明和结果之间来回跳读。
+        </p>
+      </div>
     </section>
 
-    <section class="tool-layout">
-      <article class="surface-panel tool-panel time-frequency-panel">
+    <section class="tool-layout time-frequency-workbench">
+      <article class="surface-card tool-panel time-frequency-panel">
         <div class="segment time-frequency-switch">
           <button
             class="segment__item time-frequency-switch__item"
@@ -77,6 +134,7 @@ function handleUnitChange(value: string | number) {
           <div class="time-frequency-panel__control-row">
             <input
               id="time-frequency-input"
+              ref="valueInputRef"
               v-model="inputValue"
               class="glass-input time-frequency-panel__input"
               inputmode="decimal"
@@ -100,7 +158,7 @@ function handleUnitChange(value: string | number) {
 
         <p class="time-frequency-panel__hint">
           当前支持 `s / ms / us / ns` 与 `Hz / kHz / MHz /
-          GHz`。修改数值或单位后，右侧结果会立即自动刷新。
+          GHz`。切换维度后会保留一条可继续操作的主结果路径。
         </p>
 
         <div class="panel-actions time-frequency-panel__actions">
@@ -128,9 +186,12 @@ function handleUnitChange(value: string | number) {
         </div>
       </article>
 
-      <article class="surface-panel result-panel time-frequency-result">
+      <article class="surface-card-strong result-panel time-frequency-result">
         <div class="result-panel__header">
-          <h2>换算结果</h2>
+          <div>
+            <span class="section-kicker">Primary Result</span>
+            <h2>换算结果</h2>
+          </div>
           <p v-if="copyFeedback" class="result-panel__feedback">
             {{ copyFeedback }}
           </p>
@@ -266,6 +327,12 @@ function handleUnitChange(value: string | number) {
           </p>
         </Transition>
       </article>
+
+      <ShortcutLegend
+        eyebrow="Shortcut Map"
+        title="换算快捷键"
+        :items="shortcutItems"
+      />
     </section>
-  </div>
+  </ShortcutScope>
 </template>

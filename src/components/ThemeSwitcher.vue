@@ -41,7 +41,6 @@ function handleEscape(event: KeyboardEvent) {
 }
 
 onMounted(() => {
-  themePreferenceStore.initialize()
   document.addEventListener('mousedown', handlePointerDown)
   document.addEventListener('keydown', handleEscape)
 })
@@ -78,6 +77,7 @@ onBeforeUnmount(() => {
       <span class="theme-switcher__copy">
         <span class="theme-switcher__eyebrow">Theme</span>
         <strong>{{ currentTheme.label }}</strong>
+        <small>{{ currentTheme.family }}</small>
       </span>
       <span class="theme-switcher__chevron"></span>
     </button>
@@ -110,6 +110,9 @@ onBeforeUnmount(() => {
             <span class="theme-switcher__option-label">{{ theme.label }}</span>
             <span class="theme-switcher__option-description">
               {{ theme.description }}
+            </span>
+            <span class="theme-switcher__option-signature">
+              {{ theme.signature }}
             </span>
           </span>
           <span

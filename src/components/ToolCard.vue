@@ -9,25 +9,40 @@ const props = defineProps<{
 }>()
 
 const isAvailable = computed(() => props.tool.status === 'available')
+
+const categoryLabelMap = {
+  data: '数据处理',
+  time: '时间工具',
+  workflow: '开发流程',
+} satisfies Record<ToolDefinition['category'], string>
+
+const categoryLabel = computed(() => categoryLabelMap[props.tool.category])
 </script>
 
 <template>
-  <article class="tool-card">
-    <div class="tool-card__content">
-      <div class="tool-card__meta">
-        <span class="tool-card__status" :data-state="tool.status">
-          {{ isAvailable ? '可用' : '即将推出' }}
-        </span>
-        <ul class="tool-card__tags">
-          <li v-for="tag in tool.tags" :key="tag">{{ tag }}</li>
-        </ul>
-      </div>
-
-      <div class="tool-card__copy">
-        <h3>{{ tool.name }}</h3>
-        <p>{{ tool.description }}</p>
-      </div>
+  <article
+    class="tool-card"
+    :data-category="tool.category"
+    :data-featured="tool.featured ? 'true' : 'false'"
+  >
+    <div class="tool-card__meta">
+      <span class="tool-card__status" :data-state="tool.status">
+        {{ isAvailable ? '可用' : '即将推出' }}
+      </span>
+      <span class="tool-card__category">{{ categoryLabel }}</span>
     </div>
+
+    <div class="tool-card__copy">
+      <p class="tool-card__headline">{{ tool.headline }}</p>
+      <h3>{{ tool.name }}</h3>
+      <p>{{ tool.description }}</p>
+    </div>
+
+    <p class="tool-card__shortcut">{{ tool.shortcutHint }}</p>
+
+    <ul class="tool-card__tags">
+      <li v-for="tag in tool.tags" :key="tag">{{ tag }}</li>
+    </ul>
 
     <RouterLink
       v-if="isAvailable"

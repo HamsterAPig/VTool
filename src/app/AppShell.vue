@@ -1,59 +1,127 @@
+<script setup lang="ts">
+import { computed, onMounted } from 'vue'
+import { RouterLink, RouterView, useRoute } from 'vue-router'
+
+import ThemeSwitcher from '@/components/ThemeSwitcher.vue'
+import { useThemePreferenceStore } from '@/stores/themePreference'
+
+const route = useRoute()
+const themePreferenceStore = useThemePreferenceStore()
+
+const navigationItems = [
+  {
+    label: '工作台',
+    to: '/',
+  },
+  {
+    label: 'Git 提交辅助',
+    to: '/tools/git-commit-helper',
+  },
+  {
+    label: '工时台',
+    to: '/tools/worktime',
+  },
+  {
+    label: '时间换算',
+    to: '/tools/time-frequency',
+  },
+  {
+    label: '时间戳',
+    to: '/tools/timestamp',
+  },
+]
+
+const routeEyebrow = computed(() =>
+  String(route.meta.eyebrow ?? 'VTool Workspace'),
+)
+const routeSummary = computed(() =>
+  String(
+    route.meta.summary ??
+      '把高频工具组织成统一壳层、统一主题和统一交互节奏的工具站。',
+  ),
+)
+const routeTitle = computed(() => String(route.meta.title ?? 'VTool'))
+const currentTheme = computed(() => themePreferenceStore.currentTheme)
+
+onMounted(() => {
+  themePreferenceStore.initialize()
+})
+</script>
+
 <template>
   <div class="app-shell">
-    <header class="site-header">
-      <div class="container shell-row">
-        <RouterLink class="brand-mark" to="/">
-          <span class="brand-mark__dot"></span>
-          <span>VTool</span>
-        </RouterLink>
+    <div class="app-shell__backdrop"></div>
 
-        <div class="shell-row__actions">
-          <nav class="top-nav" aria-label="Primary">
-            <RouterLink class="top-nav__link" to="/">首页</RouterLink>
-            <RouterLink class="top-nav__link" to="/tools/git-commit-helper">
-              Git 提交辅助
+    <header class="app-shell__header">
+      <div class="shell-container panel-stack">
+        <div class="surface-card-strong shell-topbar">
+          <div class="shell-brand">
+            <RouterLink class="brand-mark" to="/">
+              <span class="brand-mark__dot"></span>
+              <span class="brand-mark__copy">
+                <strong>VTool</strong>
+                <small>Tool workspace for focused utility flows</small>
+              </span>
             </RouterLink>
-            <RouterLink class="top-nav__link" to="/tools/worktime"
-              >工时日历</RouterLink
+          </div>
+
+          <nav class="top-nav" aria-label="Primary">
+            <RouterLink
+              v-for="item in navigationItems"
+              :key="item.to"
+              class="top-nav__link"
+              :to="item.to"
             >
-            <RouterLink class="top-nav__link" to="/tools/time-frequency"
-              >时间 / 频率换算</RouterLink
-            >
-            <RouterLink class="top-nav__link" to="/tools/timestamp"
-              >时间戳转换</RouterLink
-            >
+              {{ item.label }}
+            </RouterLink>
           </nav>
+
           <ThemeSwitcher />
+        </div>
+
+        <div class="surface-card shell-routebar">
+          <div class="shell-routebar__copy">
+            <span class="section-kicker">{{ routeEyebrow }}</span>
+            <div>
+              <p class="shell-routebar__title">{{ routeTitle }}</p>
+              <p class="shell-routebar__summary">{{ routeSummary }}</p>
+            </div>
+          </div>
+
+          <div class="shell-routebar__theme">
+            <span class="eyebrow-copy">当前页面样式</span>
+            <strong>{{ currentTheme.label }}</strong>
+            <p>{{ currentTheme.signature }}</p>
+          </div>
         </div>
       </div>
     </header>
 
-    <main class="container page-frame">
-      <RouterView v-slot="{ Component, route }">
+    <main class="shell-container page-stage">
+      <RouterView v-slot="{ Component, route: currentRoute }">
         <Transition mode="out-in" name="page-fade">
-          <component :is="Component" :key="route.path" />
+          <component :is="Component" :key="currentRoute.path" />
         </Transition>
       </RouterView>
     </main>
 
     <footer class="site-footer">
-      <div class="container footer-row">
-        <div>
-          <p class="footer-row__title">VTool</p>
-          <p class="footer-row__text">
-            现代化工具集合，先把常用能力做得清晰、快速、好看。
-          </p>
+      <div class="shell-container">
+        <div class="surface-card footer-board">
+          <div>
+            <p class="footer-board__title">VTool</p>
+            <p class="footer-board__text">
+              重做后的工作台把输入、结果、复制和快捷键放回同一任务流里。
+            </p>
+          </div>
+
+          <div class="footer-board__theme">
+            <span class="section-kicker">Theme Skin</span>
+            <strong>{{ currentTheme.family }}</strong>
+            <p>{{ currentTheme.signature }}</p>
+          </div>
         </div>
-        <p class="footer-row__text">
-          Warm editorial UI for everyday utility tools.
-        </p>
       </div>
     </footer>
   </div>
 </template>
-
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-
-import ThemeSwitcher from '@/components/ThemeSwitcher.vue'
-</script>
