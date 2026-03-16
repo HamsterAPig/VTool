@@ -40,7 +40,7 @@ const designPrinciples = [
 
 <template>
   <div class="home-page panel-stack">
-    <section class="surface-card-strong home-hero">
+    <!-- <section class="surface-card-strong home-hero">
       <div class="home-hero__lead">
         <span class="section-kicker">Curated Utility Workspace</span>
         <h1>高频小工具，不该在页面里来回折返。</h1>
@@ -77,14 +77,14 @@ const designPrinciples = [
           <strong>高级工具产品 + 页面级快捷键 + 三套主题页样式</strong>
         </article>
       </div>
-    </section>
+    </section> -->
 
     <section class="panel-stack">
-      <SectionHeader
+      <!-- <SectionHeader
         eyebrow="Featured Workspaces"
         title="优先重构的任务流"
         description="先把高频使用、最容易暴露交互问题的工作区做重。"
-      />
+      /> -->
 
       <div class="home-feature-grid">
         <article
@@ -128,7 +128,7 @@ const designPrinciples = [
       </article>
     </section>
 
-    <section class="panel-stack">
+    <!-- <section class="panel-stack">
       <SectionHeader
         eyebrow="Roadmap"
         title="下一批工具位"
@@ -138,6 +138,6 @@ const designPrinciples = [
       <div class="tool-grid">
         <ToolCard v-for="tool in roadmapTools" :key="tool.id" :tool="tool" />
       </div>
-    </section>
+    </section> -->
   </div>
 </template>

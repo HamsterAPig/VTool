@@ -79,7 +79,8 @@ onMounted(() => {
           <ThemeSwitcher />
         </div>
 
-        <div class="surface-card shell-routebar">
+        <!--  这个元素重复了，先屏蔽掉 -->
+        <!-- <div class="surface-card shell-routebar">
           <div class="shell-routebar__copy">
             <span class="section-kicker">{{ routeEyebrow }}</span>
             <div>
@@ -93,7 +94,7 @@ onMounted(() => {
             <strong>{{ currentTheme.label }}</strong>
             <p>{{ currentTheme.signature }}</p>
           </div>
-        </div>
+        </div> -->
       </div>
     </header>
 
