@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
-import { RouterLink, RouterView, useRoute } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router'
 
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue'
 import { useThemePreferenceStore } from '@/stores/themePreference'
 
-const route = useRoute()
 const themePreferenceStore = useThemePreferenceStore()
 
 const navigationItems = [
@@ -31,16 +30,6 @@ const navigationItems = [
   },
 ]
 
-const routeEyebrow = computed(() =>
-  String(route.meta.eyebrow ?? 'VTool Workspace'),
-)
-const routeSummary = computed(() =>
-  String(
-    route.meta.summary ??
-      '把高频工具组织成统一壳层、统一主题和统一交互节奏的工具站。',
-  ),
-)
-const routeTitle = computed(() => String(route.meta.title ?? 'VTool'))
 const currentTheme = computed(() => themePreferenceStore.currentTheme)
 
 onMounted(() => {
