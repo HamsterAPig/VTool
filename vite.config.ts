@@ -4,8 +4,8 @@
  * @LastEditors: HamsterAPig 102395304+HamsterAPig@users.noreply.github.com
  * @LastEditTime: 2026-03-17 07:12:04
  * @FilePath: \VTool\vite.config.ts
- * @Description: 
- * Copyright (c) 2026 by HamsterAPig, All Rights Reserved. 
+ * @Description:
+ * Copyright (c) 2026 by HamsterAPig, All Rights Reserved.
  */
 import { fileURLToPath, URL } from 'node:url'
 

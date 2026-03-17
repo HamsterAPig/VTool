@@ -15,11 +15,6 @@ const featuredTools = computed(() =>
 const availableTools = computed(() =>
   tools.value.filter((tool) => tool.status === 'available'),
 )
-const roadmapTools = computed(() =>
-  tools.value.filter((tool) => tool.status === 'coming-soon'),
-)
-const readyCount = computed(() => availableTools.value.length)
-const roadmapCount = computed(() => roadmapTools.value.length)
 
 const designPrinciples = [
   {
