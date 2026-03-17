@@ -100,9 +100,7 @@ onMounted(() => {
         <div class="surface-card footer-board">
           <div>
             <p class="footer-board__title">VTool</p>
-            <p class="footer-board__text">
-              静态托管的使用Vue编写的工具页面
-            </p>
+            <p class="footer-board__text">静态托管的使用Vue编写的工具页面</p>
           </div>
 
           <div class="footer-board__theme">
