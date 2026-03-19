@@ -50,7 +50,7 @@ describe('AppShell theme switching', () => {
     wrapper.unmount()
   })
 
-  it('switches theme from the header control and persists the selection', async () => {
+  it('switches to the iOS 18 theme from the header control and persists the selection', async () => {
     const wrapper = mount(AppShell, {
       attachTo: document.body,
       global: {
@@ -64,21 +64,21 @@ describe('AppShell theme switching', () => {
     const panel = document.body.querySelector(
       '.theme-switcher__panel',
     ) as HTMLDivElement | null
-    const roseThemeOption = Array.from(
+    const iosThemeOption = Array.from(
       document.body.querySelectorAll('.theme-switcher__option'),
-    ).find((option) => option.textContent?.includes('玫瑰实验室'))
+    ).find((option) => option.textContent?.includes('液态玻璃'))
 
     expect(panel).not.toBeNull()
     expect(panel?.style.left).not.toBe('')
     expect(panel?.style.width).not.toBe('')
-    expect(roseThemeOption).toBeDefined()
-    ;(roseThemeOption as HTMLButtonElement | undefined)?.click()
+    expect(iosThemeOption).toBeDefined()
+    ;(iosThemeOption as HTMLButtonElement | undefined)?.click()
     await nextTick()
 
-    expect(document.documentElement.getAttribute('data-theme')).toBe('rose-lab')
-    expect(localStorage.getItem(THEME_STORAGE_KEY)).toContain('rose-lab')
+    expect(document.documentElement.getAttribute('data-theme')).toBe('ios-18')
+    expect(localStorage.getItem(THEME_STORAGE_KEY)).toContain('ios-18')
     expect(document.body.querySelector('.theme-switcher__panel')).toBeNull()
-    expect(wrapper.text()).toContain('玫瑰实验室')
+    expect(wrapper.text()).toContain('液态玻璃')
 
     wrapper.unmount()
   })

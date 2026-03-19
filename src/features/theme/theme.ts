@@ -1,4 +1,4 @@
-export type ThemeId = 'aurora-mist' | 'jade-atelier' | 'rose-lab'
+export type ThemeId = 'aurora-mist' | 'jade-atelier' | 'rose-lab' | 'ios-18'
 
 export interface ThemeOption {
   id: ThemeId
@@ -35,6 +35,14 @@ export const themeOptions: ThemeOption[] = [
     browserThemeColor: '#fff4f1',
     family: 'Prototype Lab',
     signature: '漂浮卡片、暖色标记和实验台式布局，突出预览与结果。',
+  },
+  {
+    id: 'ios-18',
+    label: '液态玻璃',
+    description: '以 iOS 18 风格的柔光玻璃、悬浮胶囊和轻景深组织工具界面。',
+    browserThemeColor: '#f4f6ff',
+    family: 'Liquid Glass',
+    signature: '流体玻璃、分层卡片和轻量视差，让工具壳层更像设备原生面板。',
   },
 ]
 

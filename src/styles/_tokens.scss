@@ -92,6 +92,29 @@
   --button-ghost-bg: rgba(255, 255, 255, 0.72);
   --button-ghost-hover: rgba(255, 255, 255, 0.92);
   --dialog-backdrop: rgba(17, 24, 39, 0.34);
+  --glass-highlight: rgba(255, 255, 255, 0.48);
+  --glass-outline: rgba(255, 255, 255, 0.38);
+  --glass-reflection: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.62),
+    rgba(255, 255, 255, 0.08)
+  );
+  --nav-pill-bg: rgba(255, 255, 255, 0.54);
+  --nav-pill-active-bg: rgba(255, 255, 255, 0.86);
+  --nav-pill-shadow: 0 16px 36px rgba(88, 110, 148, 0.12);
+  --hover-lift: -2px;
+  --hero-mesh:
+    radial-gradient(
+      circle at 18% 18%,
+      rgba(255, 255, 255, 0.48),
+      transparent 42%
+    ),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0));
+  --hero-orb-1: rgba(113, 188, 255, 0.22);
+  --hero-orb-2: rgba(149, 226, 235, 0.18);
+  --hero-orb-3: rgba(255, 212, 194, 0.18);
+  --hero-card-bg: rgba(255, 255, 255, 0.58);
+  --hero-card-shadow: 0 24px 56px rgba(88, 110, 148, 0.16);
 }
 
 :root,
@@ -240,4 +263,83 @@
   --shadow-strong: 0 24px 84px rgba(149, 108, 120, 0.2);
   --shadow-float: 0 32px 100px rgba(149, 108, 120, 0.24);
   --button-primary-bg: linear-gradient(135deg, #8c4f63, #d3897a);
+}
+
+:root[data-theme='ios-18'] {
+  --page-gradient:
+    radial-gradient(
+      circle at 14% 10%,
+      rgba(155, 210, 255, 0.34),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 84% 14%,
+      rgba(187, 198, 255, 0.28),
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 82% 82%,
+      rgba(255, 213, 189, 0.2),
+      transparent 24%
+    ),
+    linear-gradient(180deg, #f8fbff 0%, #eef3ff 52%, #e8eefb 100%);
+  --page-glow-1: rgba(129, 201, 255, 0.24);
+  --page-glow-2: rgba(176, 193, 255, 0.2);
+  --page-glow-3: rgba(255, 220, 200, 0.2);
+  --surface-1: rgba(255, 255, 255, 0.74);
+  --surface-2: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.78),
+    rgba(245, 248, 255, 0.68)
+  );
+  --surface-3: rgba(246, 249, 255, 0.58);
+  --surface-chip: rgba(255, 255, 255, 0.48);
+  --surface-strong: rgba(255, 255, 255, 0.72);
+  --line-soft: rgba(108, 128, 166, 0.14);
+  --line-strong: rgba(108, 128, 166, 0.24);
+  --text-primary: #182334;
+  --text-muted: #66748c;
+  --text-subtle: #8090a7;
+  --accent: #4f7cff;
+  --accent-strong: #365fd1;
+  --accent-soft: rgba(79, 124, 255, 0.14);
+  --accent-band: linear-gradient(90deg, #4f7cff, #7aa4ff, #9fdcff);
+  --success: #2b8c75;
+  --success-soft: rgba(43, 140, 117, 0.12);
+  --danger: #c46378;
+  --danger-soft: rgba(196, 99, 120, 0.12);
+  --warning: #c0894b;
+  --warning-soft: rgba(192, 137, 75, 0.12);
+  --shadow-soft: 0 24px 72px rgba(110, 126, 170, 0.16);
+  --shadow-strong: 0 28px 90px rgba(110, 126, 170, 0.2);
+  --shadow-float: 0 34px 110px rgba(110, 126, 170, 0.24);
+  --focus-ring: 0 0 0 3px rgba(122, 164, 255, 0.24);
+  --button-primary-text: #f7faff;
+  --button-primary-bg: linear-gradient(135deg, #4f7cff, #7aa4ff);
+  --button-ghost-bg: rgba(255, 255, 255, 0.52);
+  --button-ghost-hover: rgba(255, 255, 255, 0.74);
+  --dialog-backdrop: rgba(48, 62, 102, 0.28);
+  --glass-highlight: rgba(255, 255, 255, 0.66);
+  --glass-outline: rgba(255, 255, 255, 0.44);
+  --glass-reflection: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.76),
+    rgba(255, 255, 255, 0.14)
+  );
+  --nav-pill-bg: rgba(255, 255, 255, 0.44);
+  --nav-pill-active-bg: rgba(255, 255, 255, 0.72);
+  --nav-pill-shadow: 0 18px 42px rgba(117, 132, 173, 0.18);
+  --hover-lift: -4px;
+  --hero-mesh:
+    radial-gradient(
+      circle at 18% 18%,
+      rgba(255, 255, 255, 0.64),
+      transparent 44%
+    ),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.1));
+  --hero-orb-1: rgba(120, 192, 255, 0.28);
+  --hero-orb-2: rgba(191, 193, 255, 0.22);
+  --hero-orb-3: rgba(255, 216, 196, 0.24);
+  --hero-card-bg: rgba(255, 255, 255, 0.46);
+  --hero-card-shadow: 0 30px 80px rgba(117, 132, 173, 0.18);
 }

@@ -24,6 +24,7 @@ describe('theme preference', () => {
     expect(isThemeId('aurora-mist')).toBe(true)
     expect(isThemeId('jade-atelier')).toBe(true)
     expect(isThemeId('rose-lab')).toBe(true)
+    expect(isThemeId('ios-18')).toBe(true)
     expect(isThemeId('warm-brown')).toBe(false)
   })
 
@@ -53,13 +54,13 @@ describe('theme preference', () => {
   })
 
   it('updates document theme metadata when applying a theme', () => {
-    applyThemeToDocument('rose-lab')
+    applyThemeToDocument('ios-18')
 
     const themeMeta = document.head.querySelector(
       'meta[name="theme-color"]',
     ) as HTMLMetaElement | null
 
-    expect(document.documentElement.getAttribute('data-theme')).toBe('rose-lab')
-    expect(themeMeta?.content).toBe('#fff4f1')
+    expect(document.documentElement.getAttribute('data-theme')).toBe('ios-18')
+    expect(themeMeta?.content).toBe('#f4f6ff')
   })
 })

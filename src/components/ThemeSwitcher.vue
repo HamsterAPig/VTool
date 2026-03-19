@@ -124,11 +124,16 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="theme-switcher" :data-open="isOpen">
+  <div
+    class="theme-switcher"
+    :data-open="isOpen"
+    :data-theme-id="currentTheme.id"
+  >
     <button
       ref="triggerRef"
       class="theme-switcher__trigger"
       type="button"
+      :data-theme-id="currentTheme.id"
       aria-label="切换主题"
       :aria-controls="listboxId"
       aria-haspopup="listbox"
@@ -171,6 +176,7 @@ onBeforeUnmount(() => {
               'theme-switcher__option--active':
                 theme.id === themePreferenceStore.currentThemeId,
             }"
+            :data-theme-id="theme.id"
             type="button"
             role="option"
             :aria-selected="theme.id === themePreferenceStore.currentThemeId"

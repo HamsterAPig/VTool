@@ -39,7 +39,17 @@ onMounted(() => {
 
 <template>
   <div class="app-shell">
-    <div class="app-shell__backdrop"></div>
+    <div class="app-shell__backdrop" aria-hidden="true">
+      <span
+        class="app-shell__backdrop-layer app-shell__backdrop-layer--north"
+      ></span>
+      <span
+        class="app-shell__backdrop-layer app-shell__backdrop-layer--east"
+      ></span>
+      <span
+        class="app-shell__backdrop-layer app-shell__backdrop-layer--mesh"
+      ></span>
+    </div>
 
     <header class="app-shell__header">
       <div class="shell-container panel-stack">

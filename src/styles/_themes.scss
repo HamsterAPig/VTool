@@ -231,3 +231,87 @@
     order: -1;
   }
 }
+
+[data-theme='ios-18'] {
+  .shell-topbar {
+    grid-template-columns: minmax(220px, auto) minmax(0, 1fr) minmax(
+        300px,
+        360px
+      );
+    align-items: center;
+  }
+
+  .top-nav {
+    justify-content: center;
+  }
+
+  .theme-switcher {
+    max-width: 360px;
+    justify-self: end;
+  }
+
+  .shell-routebar {
+    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+  }
+
+  .home-hero {
+    grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+    align-items: stretch;
+  }
+
+  .home-feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-principles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .home-feature-card,
+  .tool-card,
+  .shortcut-legend,
+  .browser-data-panel,
+  .worktime-rules,
+  .worktime-board,
+  .commit-browser,
+  .result-panel,
+  .footer-board,
+  .surface-card,
+  .surface-card-strong {
+    backdrop-filter: blur(28px) saturate(140%);
+  }
+
+  .commit-workbench {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+  }
+
+  .commit-preview {
+    position: sticky;
+    top: 1rem;
+  }
+
+  .tool-layout {
+    grid-template-columns: minmax(0, 1.05fr) 310px;
+    align-items: start;
+  }
+
+  .result-panel {
+    position: sticky;
+    top: 1rem;
+  }
+
+  .worktime-shell {
+    grid-template-columns: 320px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .worktime-calendar__day,
+  .git-commit-helper-result-card,
+  .git-commit-helper-emoji-card,
+  .time-frequency-main-result,
+  .time-frequency-group,
+  .workday-dialog__summary-item {
+    border-radius: 22px;
+  }
+}
